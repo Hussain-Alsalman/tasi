@@ -26,3 +26,21 @@ date_elements <- function(date_str) {
 num_format <- function(num) {
   as.numeric(gsub(",","", num))
 }
+
+
+#' Converting Data Frame to xts
+#'
+#' @param x Data Frame to be converted to xts object
+#'
+#' @return
+#' returns an xts object
+#' @export
+#'
+#' @examples
+#' df <- getCompanyRecords("2020-01-01", "2020-12-31", 2222)
+#' df_to_xts(df)
+df_to_xts <- function(x) {
+  colnames(x)[c(1,4:7,12)] <- c("Date", "Open", "High", "Low","Volume", "Close")
+  x <-xts::as.xts(x = x[,c("Open", "High", "Low","Volume", "Close")],order.by =x$Date )
+  return(x)
+  }
