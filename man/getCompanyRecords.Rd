@@ -14,13 +14,14 @@ getCompanyRecords(startDate, endDate, companySymbol)
 \item{companySymbol}{Company Symbol number}
 }
 \value{
-
+returns a data frame of company historical stock performance
 }
 \description{
 Historical Data of a specified company for a specified period.
 }
 \examples{
 #This will extract the historical stock records for ARAMCO for full year 2020
+## Not run:
 getCompanyRecords("2020-01-01", "2020-12-31", 2222)
-
+## End(Not run)
 }
