@@ -3,6 +3,7 @@
 #' @param startDate The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param endDate The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param companySymbol Company Symbol number
+#' @param use_cache logical operator for using cached data
 #'
 #' @return returns a data frame of company historical stock performance
 #' @export
@@ -12,8 +13,12 @@
 #' ## Not run:
 #' getCompanyRecords("2020-01-01", "2020-12-31", 2222)
 #' ## End(Not run)
-getCompanyRecords <- function (startDate, endDate, companySymbol){
-  cache <-check_cached_company(start_date = startDate, end_date = endDate,  symbol=companySymbol)
+getCompanyRecords <- function (startDate, endDate, companySymbol, use_cache = TRUE){
+  if(use_cache){
+    cache <- check_cached_company(start_date = startDate, end_date = endDate,  symbol=companySymbol)
+  } else {
+    cache <- list(is_cached = FALSE)
+  }
   if(cache$is_cached){
     return(cache$df)
   } else {
@@ -38,7 +43,7 @@ getCompanyRecords <- function (startDate, endDate, companySymbol){
   fullData$lastTradePrice <- as.numeric(fullData$lastTradePrice)
   fullData$change <- as.numeric(fullData$change)
   fullData$changePercent <- as.numeric(fullData$changePercent)
-  cach_me(fullData[nRecords:1,],companySymbol)
-  return (fullData[nRecords:1,])
+  cach_me_com(fullData[order(as.Date(fullData$transactionDate)),],companySymbol)
+  return (fullData[order(as.Date(fullData$transactionDate)),])
   }
 }

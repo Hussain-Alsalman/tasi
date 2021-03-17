@@ -4,7 +4,7 @@
 \alias{getCompanyRecords}
 \title{Historical Data of a specified company for a specified period.}
 \usage{
-getCompanyRecords(startDate, endDate, companySymbol)
+getCompanyRecords(startDate, endDate, companySymbol, use_cache = TRUE)
 }
 \arguments{
 \item{startDate}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
@@ -12,6 +12,8 @@ getCompanyRecords(startDate, endDate, companySymbol)
 \item{endDate}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
 \item{companySymbol}{Company Symbol number}
+
+\item{use_cache}{logical operator for using cached data}
 }
 \value{
 returns a data frame of company historical stock performance

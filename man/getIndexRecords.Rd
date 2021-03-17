@@ -5,12 +5,14 @@
 \title{TASI Index records
 get all records of TASI for a specified period.}
 \usage{
-getIndexRecords(fromDate, toDate)
+getIndexRecords(fromDate, toDate, use_cache = TRUE)
 }
 \arguments{
 \item{fromDate}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
 \item{toDate}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+
+\item{use_cache}{logical operator for using cached data}
 }
 \value{
 Data frame of the TASI index

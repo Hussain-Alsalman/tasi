@@ -25,5 +25,5 @@ privateGetIndex <-function(startDate, endDate, adjustPeriod){
   fullData$close <- num_format(fullData$close)
   fullData$noOfTrades <- num_format(fullData$noOfTrades)
   fullData$totalVolume <- num_format(fullData$totalVolume)
-  return (fullData[nRecords:1,])
+  return (fullData[order(as.Date(fullData$date)),])
 }

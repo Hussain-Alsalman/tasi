@@ -16,7 +16,7 @@ Currently `tasi` is only available on github. You can install the latest
 version of `tasi` with:
 
 ``` r
-devtools::install_github("Hussian-Alsalman/tasi")
+devtools::install_github("Hussain-Alsalman/tasi")
 ```
 
 ## Example

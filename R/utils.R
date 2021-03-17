@@ -40,7 +40,13 @@ num_format <- function(num) {
 #' df <- getCompanyRecords("2020-01-01", "2020-12-31", 2222)
 #' df_to_xts(df)
 df_to_xts <- function(x) {
+  if (all(c("date", "high", "open", "low" ,  "close", "totalVolume", "totalTurnover" ,"noOfTrades") %in% colnames(x))) {
+    colnames(x)[1:6] <-  c("Date", "High", "Open", "Low","Close", "Volume")
+    x <- xts::as.xts(x = x[,c("High", "Open", "Low","Close", "Volume")], order.by = x$Date)
+    return(x)
+  }else {
   colnames(x)[c(1,4:7,12)] <- c("Date", "Open", "High", "Low","Volume", "Close")
   x <-xts::as.xts(x = x[,c("Open", "High", "Low","Volume", "Close")],order.by =x$Date )
   return(x)
   }
+}
