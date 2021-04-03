@@ -50,3 +50,36 @@ df_to_xts <- function(x) {
   return(x)
   }
 }
+
+#' Title
+#'
+#' @param df unformatted data frame
+#' @param type specify type of data frame provided for formatting
+#'
+#' @return formatted data frame
+#'
+format_df <- function(df, type = "index") {
+  if (type == "company") {
+    df$transactionDate <- strptime(df$transactionDate, format = "%b %e, %Y")
+    df$previousClosePrice <- as.numeric(df$previousClosePrice)
+    df$todaysOpen <- as.numeric(df$todaysOpen)
+    df$highPrice <- as.numeric(df$highPrice)
+    df$lowPrice <- as.numeric(df$lowPrice)
+    df$volumeTraded <- as.numeric(df$volumeTraded)
+    df$turnOver <- as.numeric(df$turnOver)
+    df$noOfTrades <- as.numeric(df$noOfTrades)
+    df$lastTradePrice <- as.numeric(df$lastTradePrice)
+    df$change <- as.numeric(df$change)
+    df$changePercent <- as.numeric(df$changePercent)
+    return(df[order(as.Date(df$transactionDate)),])
+  } else {
+    df$date <- strptime(df$date, format = "%Y/%m/%d")
+    df$high <- num_format(df$high)
+    df$open <- num_format(df$open)
+    df$low <- num_format(df$low)
+    df$close <- num_format(df$close)
+    df$noOfTrades <- num_format(df$noOfTrades)
+    df$totalVolume <- num_format(df$totalVolume)
+    return (df[order(as.Date(df$date)),])
+  }
+  }

@@ -4,7 +4,7 @@
 \alias{check_cached_index}
 \title{Cashing the extracted data from the internet}
 \usage{
-check_cached_index(start_date, end_date)
+check_cached_index(start_date, end_date, index_type)
 }
 \arguments{
 \item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}

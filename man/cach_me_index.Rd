@@ -4,7 +4,7 @@
 \alias{cach_me_index}
 \title{Cashing the extracted data from the internet}
 \usage{
-cach_me_index(df)
+cach_me_index(df, index_type)
 }
 \arguments{
 \item{df}{extracted data}

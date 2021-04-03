@@ -28,7 +28,7 @@ check_cached_company <- function(start_date, end_date, symbol) {
       df <- df[which(
         as.Date(df$transactionDate) >= start_date
       ), ]
-      add_df <- getCompanyRecords(startDate = max_cached_date ,endDate = end_date, companySymbol = symbol, use_cache = FALSE)
+      add_df <- get_company_records(start_date = max_cached_date ,end_date = end_date, company_symbol = symbol, use_cache = FALSE)
       complete_df <- rbind(add_df,df)
       complete_df <- complete_df[order(as.Date(complete_df$transactionDate)),]
       return(list(df = complete_df[!duplicated(complete_df),],
@@ -66,11 +66,11 @@ cach_me_com <- function(df, symbol){
 #'
 #' @return It returns a list that will include a cached data frame if exists
 #'
-check_cached_index <- function(start_date, end_date) {
+check_cached_index <- function(start_date, end_date, index_type) {
 
   dir_path <- system.file("index_records", package = "tasi")
-  if (file.exists(file.path(dir_path,"index.rds"))) {
-    df <- readRDS(file.path(dir_path,"index.rds"))
+  if (file.exists(file.path(dir_path,paste0(index_type,".rds")))) {
+    df <- readRDS(file.path(dir_path,paste0(index_type,".rds")))
     min_cached_date <- min(as.Date(df$date))
     max_cached_date <- max(as.Date(df$date))
 
@@ -82,11 +82,11 @@ check_cached_index <- function(start_date, end_date) {
       ), ],
       is_cached = TRUE))
     } else if (end_date > max_cached_date && start_date >= min_cached_date) {
-      df <- readRDS(file.path(dir_path,"index.rds"))
+      df <- readRDS(file.path(dir_path,paste0(index_type,".rds")))
       df <- df[which(
         as.Date(df$date) >= start_date
       ), ]
-      add_df <- getIndexRecords(fromDate = max_cached_date ,toDate = end_date, use_cache = FALSE)
+      add_df <- get_index_records(start_date = max_cached_date ,end_date = end_date, use_cache = FALSE)
       complete_df <- rbind(add_df,df)
       complete_df <- complete_df[order(as.Date(complete_df$date)),]
       return(list(df = complete_df[!duplicated(complete_df),],
@@ -108,7 +108,7 @@ check_cached_index <- function(start_date, end_date) {
 #'
 #' @param df extracted data
 #'
-cach_me_index <- function(df){
+cach_me_index <- function(df,index_type){
   dir_path <- system.file("index_records", package = "tasi")
-  saveRDS(df, file.path(dir_path,"index.rds"))
+  saveRDS(df, file.path(dir_path,paste0(index_type,".rds")))
 }

@@ -5,7 +5,7 @@
 \title{Parsing URL call
 This function construct the URL string used to request data from TADAWUL website.}
 \usage{
-parseURL(p, fromDate, toDate, comSymbol = NULL, type, adjustment = "no")
+parseURL(p, fromDate, toDate, comSymbol = NULL, type, adjustment = FALSE)
 }
 \arguments{
 \item{p}{pagination numeric variable}
