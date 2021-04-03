@@ -27,7 +27,7 @@ historical performance for the past year:
 ``` r
 library("tasi")
 
-df <- getIndexRecords("2020-01-01","2021-01-30")
+df <- get_index_records("2020-01-01","2021-01-30")
 
 plot(df$date, df$close,xlab = "Date", ylab = "TASI points",type = "l")
 ```
@@ -43,7 +43,7 @@ library("dygraphs")
 library("dplyr")
 library("xts")
 # Performance of Saudi Aramco company stock 
-comp_df <- getCompanyRecords("2020-07-01","2021-02-06",companySymbol = 2222)
+comp_df <- get_company_records("2020-07-01","2021-02-06",companySymbol = 2222)
 df_c <- comp_df %>% transmute(
                       Open = todaysOpen,
                       High = highPrice,
