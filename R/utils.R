@@ -72,6 +72,15 @@ format_df <- function(df, type = "index") {
     df$change <- as.numeric(df$change)
     df$changePercent <- as.numeric(df$changePercent)
     return(df[order(as.Date(df$transactionDate)),])
+  } else if (type == "msci") {
+    df$date <- strptime(df$date, format = "%Y/%m/%d")
+    df$high <- num_format(df$high)
+    df$open <- num_format(df$open)
+    df$low <- num_format(df$low)
+    df$close <- num_format(df$close)
+    df$noOfTrades <- 0
+    df$totalVolume <- 0
+    return (df[order(as.Date(df$date)),])
   } else {
     df$date <- strptime(df$date, format = "%Y/%m/%d")
     df$high <- num_format(df$high)

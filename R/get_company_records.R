@@ -23,10 +23,7 @@ get_company_records <- function (start_date, end_date, company_symbol, use_cache
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "company", company_symbol = company_symbol, adjustPeriod = FALSE)
-
-  #Formatting the table
-  fullData<- format_df(fullData, type = "company")
-  cach_me_com(fullData,company_symbol)
-  return (fullData)
+    cach_me_com(fullData,company_symbol)
+    return (fullData)
   }
 }

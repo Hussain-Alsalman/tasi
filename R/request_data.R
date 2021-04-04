@@ -16,5 +16,6 @@ request_data <-function(startDate, endDate, type, company_symbol = NULL, adjustP
     p.table <- t(sapply(jsonData$data, function(x) unlist(x)))
     fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
   }
+  fullData <- format_df(fullData, type = type)
   return (fullData)
 }
