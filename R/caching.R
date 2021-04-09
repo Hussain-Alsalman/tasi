@@ -112,3 +112,20 @@ cach_me_index <- function(df,index_type){
   dir_path <- system.file("index_records", package = "tasi")
   saveRDS(df, file.path(dir_path,paste0(index_type,".rds")))
 }
+
+#' This function ensures that there is a folder to save the downloaded files
+#'
+#'
+#'
+#'
+#'
+setup_caching_folders <- function() {
+  if(!file.exists(system.file("index_records", package = "tasi"))){
+    dir.create(paste0(system.file(package = "tasi"),"/index_records"))
+  }
+  if(!file.exists(system.file("company_symbols", package = "tasi"))){
+    dir.create(paste0(system.file(package = "tasi"),"/company_symbols"))
+  }
+}
+
+

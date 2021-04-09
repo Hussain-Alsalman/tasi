@@ -40,7 +40,6 @@ get_index_records <- function(start_date, end_date, use_cache = TRUE){
   if((stY >cutoffDate)){
     period <- "NewIndex"
     df<-request_data(startDate = start_date, endDate = end_date, type="index", company_symbol = NULL, adjustPeriod = FALSE)
-    df <- format_df(df)
     cach_me_index(df, index_type = "index")
     return(df)
   }
