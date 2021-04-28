@@ -43,6 +43,7 @@ df_to_xts <- function(x) {
   if (all(c("date", "high", "open", "low" ,  "close", "totalVolume", "totalTurnover" ,"noOfTrades") %in% colnames(x))) {
     colnames(x)[1:6] <-  c("Date", "High", "Open", "Low","Close", "Volume")
     x <- xts::as.xts(x = x[,c("High", "Open", "Low","Close", "Volume")], order.by = x$Date)
+
     return(x)
   }else {
   colnames(x)[c(1,4:7,12)] <- c("Date", "Open", "High", "Low","Volume", "Close")
@@ -91,4 +92,26 @@ format_df <- function(df, type = "index") {
     df$totalVolume <- num_format(df$totalVolume)
     return (df[order(as.Date(df$date)),])
   }
+  }
+
+#' Add adjusted prices to dividens to an xts object
+#'
+#' @param x xts object (data frames will be converted to xts)
+#' @param symbol the symbol of the company
+#'
+#' @return
+#' @export
+#'
+#'
+#' @import magrittr
+add_adj_price <- function(x, symbol) {
+  if(!xts::is.xts(x)) x <- df_to_xts(x)
+  dividens_table <- rvest::read_html(paste0(constants$dividens, symbol)) %>% rvest::html_elements("#dividendsTable")  %>%  rvest::html_table()
+  divdns_xts<- xts::as.xts(dividens_table[[1]]$Amount, order.by = strptime(dividens_table[[1]]$`Distribution Date`, format = "%Y/%m/%d"))
+  if(length(divdns_xts) > 0){
+    x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
+  } else {
+    x$Adjusted <- x$Close
+  }
+  return(x)
   }
