@@ -107,6 +107,11 @@ format_df <- function(df, type = "index") {
 add_adj_price <- function(x, symbol) {
   if(!xts::is.xts(x)) x <- df_to_xts(x)
   dividens_table <- rvest::read_html(paste0(constants$dividens, symbol)) %>% rvest::html_elements("#dividendsTable")  %>%  rvest::html_table()
+
+  if(length(inx_na <- which(dividens_table[[1]]$`Distribution Date` == "N/A")) > 0){
+    dividens_table[[1]]$`Distribution Date`[inx_na] <- dividens_table[[1]]$`Due Date`[inx_na]
+  }
+
   divdns_xts<- xts::as.xts(dividens_table[[1]]$Amount, order.by = strptime(dividens_table[[1]]$`Distribution Date`, format = "%Y/%m/%d"))
   if(length(divdns_xts) > 0){
     x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
