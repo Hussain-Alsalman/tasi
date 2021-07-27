@@ -2,6 +2,7 @@
 
 export(add_adj_price)
 export(df_to_xts)
+export(getSymbols)
 export(get_MSCI30)
 export(get_REITs)
 export(get_banks)
