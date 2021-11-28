@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `tasi` is to provide the missing API to obtain historical prices for Saudi stocks and TASI (Tadawul All Share Index)
+The goal of `tasi` is to provide the missing API to obtain historical prices for Saudi stocks and TASI (Tadawul All Share Index) as well as easy access to the released financial statements
 
 ## Installation
 
@@ -41,24 +41,33 @@ plot(df$date, df$close,xlab = "Date", ylab = "TASI points",type = "l")
 
 ```
 
-This is more sophisticated example using `dygraphs` package to create candlesticks chart
+This is more sophisticated example using `quantmod` package to create candlesticks chart
 
-```{r sophisticated example,message=FALSE,eval=FALSE}
-library("tasi")
-library("dygraphs")
+```{r sophisticated example,message=FALSE}
+library("quantmod")
 library("dplyr")
 library("xts")
+library("tasi")
 # Performance of Saudi Aramco company stock 
-comp_df <- get_company_records("2020-07-01","2021-02-06",companySymbol = 2222)
-df_c <- comp_df %>% transmute(
-                      Open = todaysOpen,
-                      High = highPrice,
-                      Low = lowPrice,
-                      Close =lastTradePrice )
-
-df_c <-  xts(df_c,order.by = comp_df$transactionDate) 
-dygraph(df_c) %>% dyCandlestick()
+comp_df <- get_company_records("2020-07-01","2021-02-06",company_symbol = 2222)
+comp_df %>%
+  df_to_xts() %>% 
+  chart_Series()
   
 ```
 
-<img src="man/figures/interactive.png" width="100%" />
+## Extracting Financial Statements
+
+Now you can extract any financial statement for any specified company in the Saudi Market. Let see how can we easily extract an income statement for a company
+
+```{r}
+library("tasi")
+library("dplyr")
+
+income_df <- get_income_statement(1180, period_type = "q") # q stands for quarterly.
+
+opts <-options(knitr.kable.NA = "-")
+income_df %>% knitr::kable(format.args = list(big.mark = ",", scientific = FALSE))
+options(opts)
+```
+
