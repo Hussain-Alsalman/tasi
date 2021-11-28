@@ -250,3 +250,31 @@ parseURL <- function(p,fromDate, toDate, comSymbol = NULL , type, adjustment =FA
   }
 
 }
+
+
+#' Parsing URL call for Financial Statements
+#' This function construct the URL string used to request data from TADAWUL website specifically for Financial Statements.
+#'
+#' @param comSymbol Company Symbol number
+#' @param statement_type Type of Financial Statement. This can be one of these choices "balance_sheet", "income_statement", "cash_flow", "xbrl"
+#' @param period Type of period. This can be either "yearly" or "quarterly"
+#'
+#' @return
+#'
+#'
+fin_parsURL <- function(comSymbol = NULL, statement_type, period) {
+  if (statement_type == "xbrl") {
+    paste0(
+      constants$fin_statement$url,
+      constants$fin_statement$statement_type[statement_type],
+      constants$fin_statement$period[period],"&symbol=", comSymbol)
+  } else {
+  paste0(
+    constants$fin_statement$url,
+    constants$fin_statement$statement_type[statement_type],
+    constants$fin_statement$period[period],"&symbol=", comSymbol)
+    }
+}
+
+
+
