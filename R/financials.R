@@ -43,7 +43,7 @@ get_fin_statement <- function(company_symbol, period_type = "q", statement){
 #' @examples
 #' get_income_statement(1010,"q")
 get_income_statement <- function(company_symbol, period_type = "q"){
-  get_fin_statement(company_symbol, period_type = "q", statement="income_statement")
+  get_fin_statement(company_symbol, period_type = period_type, statement="income_statement")
 }
 
 #' Get balance sheet statement for specified company and reporting period
@@ -57,7 +57,7 @@ get_income_statement <- function(company_symbol, period_type = "q"){
 #' @examples
 #' get_balance_sheet(1010,"q")
 get_balance_sheet <- function(company_symbol, period_type = "q"){
-  get_fin_statement(company_symbol, period_type = "q", statement="balance_sheet")
+  get_fin_statement(company_symbol, period_type = period_type, statement="balance_sheet")
 }
 
 #' Get cash flow statement for specified company and reporting period
@@ -72,7 +72,7 @@ get_balance_sheet <- function(company_symbol, period_type = "q"){
 #' get_cash_flow(1010,"q")
 #'
 get_cash_flow <- function(company_symbol, period_type = "q"){
-  get_fin_statement(company_symbol, period_type = "q", statement="cash_flow")
+  get_fin_statement(company_symbol, period_type = period_type, statement="cash_flow")
 }
 
 
