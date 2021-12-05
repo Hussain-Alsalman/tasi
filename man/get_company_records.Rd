@@ -4,7 +4,13 @@
 \alias{get_company_records}
 \title{Historical Data of a specified company for a specified period.}
 \usage{
-get_company_records(start_date, end_date, company_symbol, use_cache = TRUE)
+get_company_records(
+  start_date,
+  end_date,
+  company_symbol,
+  tidy = FALSE,
+  use_cache = TRUE
+)
 }
 \arguments{
 \item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
@@ -12,6 +18,8 @@ get_company_records(start_date, end_date, company_symbol, use_cache = TRUE)
 \item{end_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
 \item{company_symbol}{Company Symbol number}
+
+\item{tidy}{logical operator to return tibble cleaned up data frame}
 
 \item{use_cache}{logical operator for using cached data}
 }

@@ -4,7 +4,7 @@
 \alias{getSymbols}
 \title{Historical Data of a group of companies for specific period.}
 \usage{
-getSymbols(start_date, end_date, symbol_vector, use_cache = TRUE)
+getSymbols(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE)
 }
 \arguments{
 \item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
@@ -12,6 +12,8 @@ getSymbols(start_date, end_date, symbol_vector, use_cache = TRUE)
 \item{end_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
 \item{symbol_vector}{vector of company symbol numbers}
+
+\item{tidy}{logical operator to return aggregated tibble}
 
 \item{use_cache}{logical operator for using cached data}
 }
