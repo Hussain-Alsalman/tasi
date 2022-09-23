@@ -15,7 +15,7 @@ fin_parsURL(comSymbol = NULL, statement_type, period)
 \item{period}{Type of period. This can be either "yearly" or "quarterly"}
 }
 \value{
-
+string of values
 }
 \description{
 Parsing URL call for Financial Statements

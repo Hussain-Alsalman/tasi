@@ -9,24 +9,28 @@
 #'
 #' @import magrittr rvest
 #'
-get_fin_statement <- function(company_symbol, period_type = "q", statement){
-  url <- fin_parsURL(company_symbol,statement,period_type)
-  fin_df <-url %>% rvest::read_html() %>% rvest::html_table() %>% .[[1]] %>% .[-((nrow(.)-3):nrow(.)),]
+get_fin_statement <- function(company_symbol, period_type = "q", statement) {
+  url <- fin_parsURL(company_symbol, statement, period_type)
+  fin_df <- url %>% rvest::read_html() %>% rvest::html_table() %>% .[[1]] %>% .[-((nrow(.) - 3):nrow(.)), ]
   header <- colnames(fin_df)
   switch(period_type,
          q = {
-           temp_header <- header[-1] %>% {paste0("Q",lubridate::quarter(.),"_",lubridate::year(.))}
-           header <- c(snakecase::to_any_case(header[1],"snake"), temp_header)
+           temp_header <- header[-1] %>% {
+             paste0("Q", lubridate::quarter(.), "_", lubridate::year(.))
+             }
+           header <- c(snakecase::to_any_case(header[1], "snake"), temp_header)
          },
          y = {
-           temp_header <- header[-1] %>% {paste0("Y_",lubridate::year(.))}
-           header <- c(snakecase::to_any_case(header[1],"snake"), temp_header)
+           temp_header <- header[-1] %>% {
+             paste0("Y_", lubridate::year(.))
+             }
+           header <- c(snakecase::to_any_case(header[1], "snake"), temp_header)
          }
   )
   colnames(fin_df) <- header
-  fin_df[,2:5] <- sapply(fin_df[,2:5],function(x){x<-gsub(",","",x)
-
-  x <- suppressWarnings(as.numeric(x)*1000)
+  fin_df[, 2:5] <- sapply(fin_df[, 2:5], function(x) {
+    x <- gsub(",", "", x)
+    x <- suppressWarnings(as.numeric(x) * 1000)
   }
   )
   return(fin_df)
@@ -42,8 +46,8 @@ get_fin_statement <- function(company_symbol, period_type = "q", statement){
 #'
 #' @examples
 #' get_income_statement(1010,"q")
-get_income_statement <- function(company_symbol, period_type = "q"){
-  get_fin_statement(company_symbol, period_type = period_type, statement="income_statement")
+get_income_statement <- function(company_symbol, period_type = "q") {
+  get_fin_statement(company_symbol, period_type = period_type, statement = "income_statement")
 }
 
 #' Get balance sheet statement for specified company and reporting period
@@ -56,8 +60,8 @@ get_income_statement <- function(company_symbol, period_type = "q"){
 #'
 #' @examples
 #' get_balance_sheet(1010,"q")
-get_balance_sheet <- function(company_symbol, period_type = "q"){
-  get_fin_statement(company_symbol, period_type = period_type, statement="balance_sheet")
+get_balance_sheet <- function(company_symbol, period_type = "q") {
+  get_fin_statement(company_symbol, period_type = period_type, statement = "balance_sheet")
 }
 
 #' Get cash flow statement for specified company and reporting period
@@ -71,8 +75,8 @@ get_balance_sheet <- function(company_symbol, period_type = "q"){
 #' @examples
 #' get_cash_flow(1010,"q")
 #'
-get_cash_flow <- function(company_symbol, period_type = "q"){
-  get_fin_statement(company_symbol, period_type = period_type, statement="cash_flow")
+get_cash_flow <- function(company_symbol, period_type = "q") {
+  get_fin_statement(company_symbol, period_type = period_type, statement = "cash_flow")
 }
 
 
@@ -80,17 +84,15 @@ get_cash_flow <- function(company_symbol, period_type = "q"){
 #'
 #' @param company_symbol Company Symbol number
 #'
-#' @return
+#' @return Data Frame that includes all links
 #' @import magrittr rvest
 
-get_xbrl_table <- function(company_symbol)
-  {
+get_xbrl_table <- function(company_symbol) {
   xbrl_page  <- fin_parsURL(company_symbol, statement_type = "xbrl",period = 0)
 
   page <- read_html(xbrl_page)
-  links <- page %>%  html_elements("td")  %>%  .[-seq(1,to =30,by =6)] %>% html_element("a")
-
-  df <- data.frame(matrix(rep(NA,25),nrow = 5))
+  links <- page %>%  html_elements("td")  %>%  .[-seq(1,to = 30, by = 6)] %>% html_element("a")
+  df <- data.frame(matrix(rep(NA, 25), nrow = 5))
 
     for(i in 1:5){
     for (j in 1:5){
@@ -106,7 +108,7 @@ get_xbrl_table <- function(company_symbol)
 
   table_links <- page %>%
     html_elements("td") %>%
-    .[seq(1,to =30,by =6)] %>%
+    .[seq(1, to = 30, by = 6)] %>%
     html_text() %>%
     cbind(df)
 
@@ -136,11 +138,9 @@ return(results)
 #' @return character vector of all available xbrl statements
 #' @export
 
-get_available_xbrl_statements <- function(xbrl_statement, period)
-  {
+get_available_xbrl_statements <- function(xbrl_statement, period) {
   index <- which(xbrl_statement$statement == period)
-  if( !is.na(xbrl_statement[index, "link"]) )
-    {
+  if( !is.na(xbrl_statement[index, "link"]) ) {
     url <- xbrl_statement[index, "link"]
     p <- read_html(paste0(constants$domain,url))
 

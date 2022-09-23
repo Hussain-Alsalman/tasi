@@ -12,7 +12,7 @@ add_adj_price(x, symbol)
 \item{symbol}{the symbol of the company}
 }
 \value{
-
+xts object with adjusted prices
 }
 \description{
 Add adjusted prices to dividens to an xts object

@@ -10,7 +10,7 @@ get_xbrl_table(company_symbol)
 \item{company_symbol}{Company Symbol number}
 }
 \value{
-
+Data Frame that includes all links
 }
 \description{
 Getting XBRL financial statement links

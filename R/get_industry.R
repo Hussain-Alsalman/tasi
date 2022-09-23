@@ -9,18 +9,17 @@
 #'
 #' @examples
 #' get_MSCI30("2020-01-01", "2020-12-31")
-#'
 
 get_MSCI30 <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "MSCI30" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "MSCI30")
   } else {
     cache <- list(is_cached = FALSE)
   }
   if(cache$is_cached){
     return(cache$df)
   } else {
-    fullData <- request_data(startDate = start_date, endDate = end_date, type = "msci", company_symbol = NULL, adjustPeriod = FALSE)
+    fullData <- request_data(startDate = start_date, endDate = end_date, type = "msci30", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData,index_type = "MSCI30")
     return (fullData)
   }
@@ -40,17 +39,17 @@ get_MSCI30 <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_energy <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "energy" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "energy")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "energy", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "energy" )
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -68,17 +67,17 @@ get_energy <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_materials <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "materials" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "materials")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "materials", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "materials")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -96,17 +95,17 @@ get_materials <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_capitals <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "capitals" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "capitals")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "capitals", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "capitals")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -124,17 +123,17 @@ get_capitals <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_commercials <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "commercials" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "commercials")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "commercials", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type ="commercials")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -152,17 +151,17 @@ get_commercials <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_transportation <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "transportation" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "transportation")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "transportation", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "transportation")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -180,17 +179,17 @@ get_transportation <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_consumer_durables <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "consumer_durables" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "consumer_durables")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "consumer_durables", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "consumer_durables")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -208,17 +207,17 @@ get_consumer_durables <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_consumer_services <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "consumer_services" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "consumer_services")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "consumer_services", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "consumer_services")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -236,17 +235,17 @@ get_consumer_services <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_media <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "media" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "media")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "media", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "media")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -264,17 +263,17 @@ get_media <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_retailing <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "retailing" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "retailing")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "retailing", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "retailing")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -292,17 +291,17 @@ get_retailing <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_food_beverages <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
+  if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "food_beverages" )
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "food_beverages", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "food_beverages")
-    return (fullData)
+    return(fullData)
   }
 }
 
@@ -320,17 +319,17 @@ get_food_beverages <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_health <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
+  if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "health" )
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "health", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "health" )
-    return (fullData)
+    return(fullData)
   }
 }
 #' Pharma Index
@@ -347,17 +346,17 @@ get_health <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_pharma <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "pharma" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "pharma")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "pharma", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type =  "pharma")
-    return (fullData)
+    return(fullData)
   }
 }
 #' Banks Index
@@ -374,17 +373,17 @@ get_pharma <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_banks <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "banks" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "banks")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "banks", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "banks")
-    return (fullData)
+    return(fullData)
   }
 }
 #' Deversified Financials Index
@@ -401,17 +400,17 @@ get_banks <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_deversified <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "deversified" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "deversified")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "deversified", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "deversified")
-    return (fullData)
+    return(fullData)
   }
 }
 #' Insurance Index
@@ -428,17 +427,17 @@ get_deversified <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_insurance <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "insurance" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "insurance")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "insurance", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(fullData, index_type = "insurance" )
-    return (fullData)
+    cach_me_index(fullData, index_type = "insurance")
+    return(fullData)
   }
 }
 #' Telecommunication Index
@@ -455,17 +454,17 @@ get_insurance <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_telecom <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "telecom" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "telecom")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "telecom", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "telecom")
-    return (fullData)
+    return(fullData)
   }
 }
 #' Utilities Index
@@ -482,17 +481,17 @@ get_telecom <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_utilities <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
+  if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "utilities" )
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "utilities", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "utilities")
-    return (fullData)
+    return(fullData)
   }
 }
 #' REITs Index
@@ -509,17 +508,17 @@ get_utilities <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_REITs <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "REITs" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "REITs")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "REITs", company_symbol = NULL, adjustPeriod = FALSE)
     cach_me_index(fullData, index_type = "REITs")
-    return (fullData)
+    return(fullData)
   }
 }
 #' Real Estate Index
@@ -536,16 +535,16 @@ get_REITs <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_real_estate <- function(start_date, end_date, use_cache = TRUE) {
-  if(use_cache){
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "real_estate" )
+  if (use_cache) {
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "real_estate")
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "real_estate", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(fullData, index_type = "real_estate" )
-    return (fullData)
+    cach_me_index(fullData, index_type = "real_estate")
+    return(fullData)
   }
 }

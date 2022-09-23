@@ -16,6 +16,6 @@ returns an xts object
 Converting Data Frame to xts
 }
 \examples{
-df <- getCompanyRecords("2020-01-01", "2020-12-31", 2222)
+df <- get_company_records("2020-01-01", "2020-12-31", 2222)
 df_to_xts(df)
 }

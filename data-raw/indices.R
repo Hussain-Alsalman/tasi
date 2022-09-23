@@ -3,7 +3,7 @@ library("dplyr")
 library("readr")
 
 #Obtain all Data
-all_symbols<-rjson::fromJSON(file = "https://www.saudiexchange.sa/tadawul.eportal.theme.helper/ThemeSearchUtilityServlet")
+all_symbols <- rjson::fromJSON(file = "https://www.saudiexchange.sa/tadawul.eportal.theme.helper/ThemeSearchUtilityServlet")
 
 # Extract Column Names
 col_names <- unique(unlist(sapply(all_symbols, function(x) names(x))))
@@ -13,9 +13,9 @@ df <- data.frame(matrix(nrow =  length(all_symbols), ncol = length(col_names)))
 colnames(df) <- col_names
 
 # Populate Data Frame with Data
-for ( i in seq_along(col_names)){
-  df[col_names[i]]<- sapply(all_symbols, function(el) {
-    ifelse(!is.null(unlist(el[col_names[i]])), unlist(el[col_names[i]]),NA)})
+for (i in seq_along(col_names)) {
+  df[col_names[i]] <- sapply(all_symbols, function(el) {
+    ifelse(!is.null(unlist(el[col_names[i]])), unlist(el[col_names[i]]), NA)})
 }
 
 # Obtain supplemental information for each company
@@ -24,8 +24,12 @@ df_supplement <- t(sapply(df_supplement$data, function(x) unlist(x)))
 df_supplement <- as.data.frame(df_supplement)
 
 # Split Data into Different Subsets
-stock_indices_partial <- df %>% filter(market_type == "M") %>%  select(-bond_type)
-bonds_indices <- df %>% filter(market_type == "B") %>% select(-tradingNameEn, -tradingNameAr)
+stock_indices_partial <- df %>%
+  filter(market_type == "M") %>%
+  select(-bond_type)
+bonds_indices <- df %>%
+  filter(market_type == "B") %>%
+  select(-tradingNameEn, -tradingNameAr)
 
 
 stock_indices <- df_supplement %>%

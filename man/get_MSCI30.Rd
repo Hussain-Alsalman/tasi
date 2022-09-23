@@ -23,5 +23,4 @@ get all records of MSCI Tadawul 30 Index for a specified period.
 }
 \examples{
 get_MSCI30("2020-01-01", "2020-12-31")
-
 }
