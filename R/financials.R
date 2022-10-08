@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 #' General Function to obtain Financial Statements (No XBRL parsing)
 #'
 #' @param company_symbol  Company Symbol number
@@ -88,20 +89,19 @@ get_cash_flow <- function(company_symbol, period_type = "q") {
 #' @import magrittr rvest
 
 get_xbrl_table <- function(company_symbol) {
-  xbrl_page  <- fin_parsURL(company_symbol, statement_type = "xbrl",period = 0)
+  xbrl_page  <- fin_parsURL(company_symbol, statement_type = "xbrl", period = 0)
 
   page <- read_html(xbrl_page)
-  links <- page %>%  html_elements("td")  %>%  .[-seq(1,to = 30, by = 6)] %>% html_element("a")
+  links <- page %>%  html_elements("td")  %>%  .[-seq(1, to = 30, by = 6)] %>% html_element("a")
   df <- data.frame(matrix(rep(NA, 25), nrow = 5))
 
-    for(i in 1:5){
-    for (j in 1:5){
-      n <- ((i-1)*5)+j
-      if (is.na(links[n]))
-      {
-        df[i,j] <- NA
+    for (i in 1:5) {
+    for (j in 1:5) {
+      n <- ((i - 1) * 5) + j
+      if (is.na(links[n])) {
+        df[i, j] <- NA
       } else {
-        df[i,j] <- links[n]  %>%  html_attr("href") %>% as.character()
+        df[i, j] <- links[n]  %>%  html_attr("href") %>% as.character()
       }
     }
   }
@@ -140,9 +140,9 @@ return(results)
 
 get_available_xbrl_statements <- function(xbrl_statement, period) {
   index <- which(xbrl_statement$statement == period)
-  if( !is.na(xbrl_statement[index, "link"]) ) {
+  if (!is.na(xbrl_statement[index, "link"])) {
     url <- xbrl_statement[index, "link"]
-    p <- read_html(paste0(constants$domain,url))
+    p <- read_html(paste0(constants$domain, url))
 
     statements <- p %>% html_elements("body div[style]") %>% html_attr("class")
     statements[-which(statements %in% c("logo-div"))]
@@ -166,26 +166,21 @@ get_available_xbrl_statements <- function(xbrl_statement, period) {
 #' period <- "Annual-2019"
 #' get_statement_xbrl(company_symbol, period,"StatementOfOtherComprehensiveIncomeBeforeTax")
 
-get_statement_xbrl <- function(company_symbol, period, statement_type=NULL)
-  {
+get_statement_xbrl <- function(company_symbol, period, statement_type = NULL) {
 
   xbrl_table <- get_xbrl_table(company_symbol)
-  if(!is.null(xbrl <- get_available_xbrl_statements(xbrl_table,period)))
-     {
-       p <- read_html(paste0(constants$domain, xbrl_table[which(xbrl_table$statement == period),"link"]))
+  if (!is.null(xbrl <- get_available_xbrl_statements(xbrl_table, period))) {
+       p <- read_html(paste0(constants$domain, xbrl_table[which(xbrl_table$statement == period), "link"]))
 
-       if(!is.null(statement_type))
-         {
-         p %>% html_element(css = paste0("div.",statement_type)) %>% html_table(header = T)
+       if (!is.null(statement_type)) {
+         p %>% html_element(css = paste0("div.", statement_type)) %>% html_table(header = TRUE)
 
          } else {
            chosen_statement <- menu(choices = xbrl)
-           p %>% html_element(css = paste0("div.",xbrl[chosen_statement])) %>% html_table(header = T)
+           p %>% html_element(css = paste0("div.", xbrl[chosen_statement])) %>% html_table(header = TRUE)
       }
     }else {
     NULL
-    #stop("No statements are available for the selected period")
     }
 }
-
-
+# nolint end

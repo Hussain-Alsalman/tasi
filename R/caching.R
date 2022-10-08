@@ -1,4 +1,4 @@
-
+# nolint start: line_length_linter, object_name_linter.
 #' Cetting Cached historical data for companies
 #'
 #' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
@@ -123,3 +123,4 @@ setup_caching_folders <- function() {
     dir.create(paste0(system.file(package = "tasi"), "/company_symbols"))
   }
 }
+# nolint end

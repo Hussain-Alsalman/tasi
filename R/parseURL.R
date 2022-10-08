@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 #' Parsing URL call
 #' This function construct the URL string used to request data from TADAWUL website.
 #'
@@ -28,7 +29,7 @@ parseURL <- function(p, fromDate, toDate, comSymbol = NULL, type, adjustment = F
       )
     )
   }
-  if (type != "company" & type != "index") {
+  if (type != "company" && type != "index") {
     industry_parser(p, from_date = fromDate, to_date = toDate, industry = type)
   }
 }
@@ -57,3 +58,8 @@ fin_parsURL <- function(comSymbol = NULL, statement_type, period) {
     constants$fin_statement$period[period], "&symbol=", comSymbol)
     }
 }
+
+profile_parse_url  <- function(com_symbol = NULL) {
+
+}
+# nolint end

@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 #' MSCI Tadawul 30 Index
 #' get all records of MSCI Tadawul 30 Index for a specified period.
 #' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
@@ -16,12 +17,12 @@ get_MSCI30 <- function(start_date, end_date, use_cache = TRUE) {
   } else {
     cache <- list(is_cached = FALSE)
   }
-  if(cache$is_cached){
+  if (cache$is_cached) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "msci30", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(fullData,index_type = "MSCI30")
-    return (fullData)
+    cach_me_index(fullData, index_type = "MSCI30")
+    return(fullData)
   }
 }
 
@@ -48,7 +49,7 @@ get_energy <- function(start_date, end_date, use_cache = TRUE) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "energy", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(fullData, index_type = "energy" )
+    cach_me_index(fullData, index_type = "energy")
     return(fullData)
   }
 }
@@ -132,7 +133,7 @@ get_commercials <- function(start_date, end_date, use_cache = TRUE) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "commercials", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(fullData, index_type ="commercials")
+    cach_me_index(fullData, index_type = "commercials")
     return(fullData)
   }
 }
@@ -292,7 +293,7 @@ get_retailing <- function(start_date, end_date, use_cache = TRUE) {
 
 get_food_beverages <- function(start_date, end_date, use_cache = TRUE) {
   if (use_cache) {
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "food_beverages" )
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "food_beverages")
   } else {
     cache <- list(is_cached = FALSE)
   }
@@ -320,7 +321,7 @@ get_food_beverages <- function(start_date, end_date, use_cache = TRUE) {
 
 get_health <- function(start_date, end_date, use_cache = TRUE) {
   if (use_cache) {
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "health" )
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "health")
   } else {
     cache <- list(is_cached = FALSE)
   }
@@ -328,7 +329,7 @@ get_health <- function(start_date, end_date, use_cache = TRUE) {
     return(cache$df)
   } else {
     fullData <- request_data(startDate = start_date, endDate = end_date, type = "health", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(fullData, index_type = "health" )
+    cach_me_index(fullData, index_type = "health")
     return(fullData)
   }
 }
@@ -482,7 +483,7 @@ get_telecom <- function(start_date, end_date, use_cache = TRUE) {
 
 get_utilities <- function(start_date, end_date, use_cache = TRUE) {
   if (use_cache) {
-    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "utilities" )
+    cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "utilities")
   } else {
     cache <- list(is_cached = FALSE)
   }
@@ -548,3 +549,4 @@ get_real_estate <- function(start_date, end_date, use_cache = TRUE) {
     return(fullData)
   }
 }
+# nolint end

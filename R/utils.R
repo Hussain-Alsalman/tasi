@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 #' Date element extractor
 #'
 #' @param date_str Date is a string that needs to be in yyyy-mm-dd format
@@ -132,3 +133,4 @@ industry_parser <- function(p, from_date, to_date, industry) {
       )
     )
 }
+# nolint end

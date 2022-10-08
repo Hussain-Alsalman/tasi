@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 #' Data Crawler
 #'
 #' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
@@ -20,3 +21,4 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
   fullData <- format_df(fullData, type = type)
   return(fullData)
 }
+# nolint end

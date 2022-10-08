@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 #' Stocks Information Dataset
 #'
 #' A dataset containing the stock symbols and other attributes of over 200 companies on Tadawul website.
@@ -36,3 +37,4 @@
 #'   \item{bond_type}{Bondy type. "S" for private, "G" for government}
 #' }
 "bonds_indices"
+# nolint end

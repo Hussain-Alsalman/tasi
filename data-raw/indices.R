@@ -1,3 +1,4 @@
+# nolint start: line_length_linter, object_name_linter.
 # API endpoint for listing all stocks
 library("dplyr")
 library("readr")
@@ -34,7 +35,9 @@ bonds_indices <- df %>%
 
 stock_indices <- df_supplement %>%
   select(-companyName) %>%
-  left_join(stock_indices_partial, by = "symbol")
+  left_join(stock_indices_partial, by = "symbol") %>%
+  mutate(across(.cols = everything(), .fns = trimws))
 
 #write in the Stock market Data
 usethis::use_data(stock_indices, bonds_indices, overwrite = TRUE)
+# nolint end
