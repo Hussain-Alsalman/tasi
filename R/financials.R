@@ -12,7 +12,12 @@
 #'
 get_fin_statement <- function(company_symbol, period_type = "q", statement) {
   url <- fin_parsURL(company_symbol, statement, period_type)
-  fin_df <- url %>% rvest::read_html() %>% rvest::html_table() %>% .[[1]] %>% .[-((nrow(.) - 3):nrow(.)), ]
+  fin_df <- url %>%
+    rvest::read_html() %>%
+    rvest::html_table() %>%
+    .[[1]] %>%
+    .[-((nrow(.) - 3):nrow(.)), ]
+
   header <- colnames(fin_df)
   switch(period_type,
          q = {

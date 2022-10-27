@@ -7,7 +7,10 @@
 #'
 #' @return : data frame of the TASI index
 request_data <- function(startDate, endDate, type, company_symbol = NULL, adjustPeriod = FALSE) {
+
   setup_caching_folders()
+  validate_input(startDate, endDate, company_symbol)
+
   record_limit <- ifelse(type == "company", 30, 10)
   nRecords <-  rjson::fromJSON(file = parseURL(0, startDate, endDate, type = type, comSymbol = company_symbol, adjustment = adjustPeriod))$recordsFiltered
   ifelse(nRecords <= record_limit, nPages <- 1, nPages <- ceiling(nRecords / record_limit))

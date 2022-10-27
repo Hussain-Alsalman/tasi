@@ -17,6 +17,9 @@
 #' get_company_records("2020-01-01", "2020-12-31", 2222)
 #' ## End(Not run)
 get_company_records <- function(start_date, end_date, company_symbol, tidy = FALSE, use_cache = TRUE) {
+
+  validate_input(start_date, end_date, company_symbol)
+
   if (use_cache) {
     cache <- check_cached_company(start_date = start_date, end_date = end_date,  symbol = company_symbol)
   } else {
@@ -24,7 +27,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
   }
   if (cache$is_cached) {
     if (tidy) {
-      return_df <- cashe$df %>%
+      return_df <- cache$df %>%
         add_adj_price(symbol = company_symbol) %>%
         as_tibble(rownames = "Date") %>%
         add_column(.before = 1, symbol = rep(as.character(company_symbol), nrow(.))) %>%
@@ -69,6 +72,9 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
 #'
 #'
 getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE) {
+
+  validate_input(start_date, end_date, company_symbol)
+
   if (tidy) {
     aggregate_tbl <- NULL
     for (symbol in symbol_vector) {
@@ -79,7 +85,8 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
       add_column(.before = 1, symbol = rep(as.character(symbol), nrow(.))) %>%
       mutate(Date = lubridate::as_date(Date))
 
-    aggregate_tbl <- aggregate_tbl %>% bind_rows(tbl)
+    aggregate_tbl <- aggregate_tbl %>%
+      bind_rows(tbl)
     }
     return(aggregate_tbl)
   }

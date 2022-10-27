@@ -1,4 +1,31 @@
 # nolint start: line_length_linter, object_name_linter.
+
+#' Validating input function
+#'
+#' @param start_date Date to be validated.
+#' @param end_date Date to be validated.
+#' @param company_symbol Company Symbol to be validated. This is omitted by Default.
+#'
+#' @return This Function returns error message if any of the checks failed.
+#'
+validate_input <- function(start_date, end_date, company_symbol = "omit") {
+
+  for (str in c(start_date,end_date)) {
+    if (!assertthat::is.string(str)) {
+      stop("Date provided is not a string. Please provide date as string in 'yyyy-mm-dd' format")
+      }
+    if (!grepl(pattern = "[1-2][0-9]{3}-[0-1][0-9]-[0-9]{2}", x = str)) {
+      stop("Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'")
+    }
+  }
+
+  if (company_symbol != "omit") {
+    if (!grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
+      stop("Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'")
+    }
+  }
+}
+
 #' Date element extractor
 #'
 #' @param date_str Date is a string that needs to be in yyyy-mm-dd format
@@ -6,6 +33,7 @@
 #' @return list containing date elements and full date string.
 #'
 date_elements <- function(date_str) {
+  validate_input(start_date = date_str, as.character(Sys.Date()))
   date_str <- strptime(date_str, format = "%Y-%m-%d")
   return(list(
     Y = format.Date(date_str, "%Y"),
@@ -133,4 +161,5 @@ industry_parser <- function(p, from_date, to_date, industry) {
       )
     )
 }
+
 # nolint end

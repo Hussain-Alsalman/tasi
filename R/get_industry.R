@@ -12,6 +12,7 @@
 #' get_MSCI30("2020-01-01", "2020-12-31")
 
 get_MSCI30 <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "MSCI30")
   } else {
@@ -40,6 +41,7 @@ get_MSCI30 <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_energy <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "energy")
   } else {
@@ -68,6 +70,7 @@ get_energy <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_materials <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "materials")
   } else {
@@ -96,6 +99,7 @@ get_materials <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_capitals <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "capitals")
   } else {
@@ -124,6 +128,7 @@ get_capitals <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_commercials <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "commercials")
   } else {
@@ -152,6 +157,7 @@ get_commercials <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_transportation <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "transportation")
   } else {
@@ -180,6 +186,7 @@ get_transportation <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_consumer_durables <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "consumer_durables")
   } else {
@@ -208,6 +215,7 @@ get_consumer_durables <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_consumer_services <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "consumer_services")
   } else {
@@ -236,6 +244,7 @@ get_consumer_services <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_media <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "media")
   } else {
@@ -264,6 +273,7 @@ get_media <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_retailing <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "retailing")
   } else {
@@ -292,6 +302,7 @@ get_retailing <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_food_beverages <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "food_beverages")
   } else {
@@ -320,6 +331,7 @@ get_food_beverages <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_health <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "health")
   } else {
@@ -347,6 +359,7 @@ get_health <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_pharma <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "pharma")
   } else {
@@ -374,6 +387,7 @@ get_pharma <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_banks <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "banks")
   } else {
@@ -401,6 +415,7 @@ get_banks <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_deversified <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "deversified")
   } else {
@@ -428,6 +443,7 @@ get_deversified <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_insurance <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "insurance")
   } else {
@@ -455,6 +471,7 @@ get_insurance <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_telecom <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "telecom")
   } else {
@@ -482,6 +499,7 @@ get_telecom <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_utilities <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "utilities")
   } else {
@@ -509,6 +527,7 @@ get_utilities <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_REITs <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "REITs")
   } else {
@@ -536,6 +555,7 @@ get_REITs <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_real_estate <- function(start_date, end_date, use_cache = TRUE) {
+  validate_input(start_date, end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "real_estate")
   } else {

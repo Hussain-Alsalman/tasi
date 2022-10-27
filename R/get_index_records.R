@@ -12,6 +12,9 @@
 #' get_index_records("2020-01-01", "2020-12-31")
 #'
 get_index_records <- function(start_date, end_date, use_cache = TRUE) {
+
+  validate_input(startDate, endDate)
+
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "index")
   } else {
