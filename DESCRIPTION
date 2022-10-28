@@ -18,7 +18,15 @@ Imports:
     dplyr,
     magrittr,
     rvest,
-    tibble
+    tibble,
+    TTR,
+    assertthat,
+    janitor,
+    lubridate,
+    quantmod,
+    snakecase,
+    stringr,
+    tidyr
 Depends: 
     R (>= 2.10)
 Suggests: 

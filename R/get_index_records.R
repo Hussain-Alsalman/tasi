@@ -13,7 +13,7 @@
 #'
 get_index_records <- function(start_date, end_date, use_cache = TRUE) {
 
-  validate_input(startDate, endDate)
+  validate_input(start_date, end_date)
 
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "index")

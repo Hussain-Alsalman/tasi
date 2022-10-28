@@ -73,20 +73,20 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
 #'
 getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE) {
 
-  validate_input(start_date, end_date, company_symbol)
+  validate_input(start_date, end_date)
 
   if (tidy) {
     aggregate_tbl <- NULL
     for (symbol in symbol_vector) {
-    df <- get_company_records(start_date, end_date, symbol, use_cache = TRUE)
-    df <- add_adj_price(df, symbol = symbol)
-    tbl <- df %>%
-      as_tibble(rownames = "Date") %>%
-      add_column(.before = 1, symbol = rep(as.character(symbol), nrow(.))) %>%
-      mutate(Date = lubridate::as_date(Date))
+      df <- get_company_records(start_date, end_date, symbol, use_cache = TRUE)
+      df <- add_adj_price(df, symbol = symbol)
+      tbl <- df %>%
+        as_tibble(rownames = "Date") %>%
+        add_column(.before = 1, symbol = rep(as.character(symbol), nrow(.))) %>%
+        mutate(Date = lubridate::as_date(Date))
 
-    aggregate_tbl <- aggregate_tbl %>%
-      bind_rows(tbl)
+      aggregate_tbl <- aggregate_tbl %>%
+        bind_rows(tbl)
     }
     return(aggregate_tbl)
   }

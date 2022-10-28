@@ -34,15 +34,15 @@ constants <- list(
     period = c(
       "y" = "&reportType=0",
       "q" = "&reportType=1"
-      ),
+    ),
     statement_type = c(
       "balance_sheet" = "statementType=0",
       "income_statement" = "statementType=1",
       "cash_flow" = "statementType=2",
       "xbrl" = "statementType=4"
-      )
     )
   )
+)
 
 usethis::use_data(constants, overwrite = TRUE, internal = TRUE)
 # nolint end

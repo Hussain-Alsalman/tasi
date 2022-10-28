@@ -12,7 +12,7 @@
 #' get_MSCI30("2020-01-01", "2020-12-31")
 
 get_MSCI30 <- function(start_date, end_date, use_cache = TRUE) {
-  validate_input(start_date, end_date)
+  validate_input(start_date = start_date, end_date = end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "MSCI30")
   } else {
@@ -204,7 +204,7 @@ get_consumer_durables <- function(start_date, end_date, use_cache = TRUE) {
 #' Consumer Services Index
 #' get all records of Consumer Services Index for a specified period.
 #' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
-#' @param emd_date The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
+#' @param end_date The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param use_cache logical operator for using cached data
 #'
 #' @return Data frame of the Consumer Services Index
@@ -555,7 +555,7 @@ get_REITs <- function(start_date, end_date, use_cache = TRUE) {
 #'
 
 get_real_estate <- function(start_date, end_date, use_cache = TRUE) {
-  validate_input(start_date, end_date)
+  validate_input(start_date = start_date, end_date = end_date)
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date,  index_type = "real_estate")
   } else {

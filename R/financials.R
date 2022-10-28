@@ -23,13 +23,13 @@ get_fin_statement <- function(company_symbol, period_type = "q", statement) {
          q = {
            temp_header <- header[-1] %>% {
              paste0("Q", lubridate::quarter(.), "_", lubridate::year(.))
-             }
+           }
            header <- c(snakecase::to_any_case(header[1], "snake"), temp_header)
          },
          y = {
            temp_header <- header[-1] %>% {
              paste0("Y_", lubridate::year(.))
-             }
+           }
            header <- c(snakecase::to_any_case(header[1], "snake"), temp_header)
          }
   )
@@ -100,7 +100,7 @@ get_xbrl_table <- function(company_symbol) {
   links <- page %>%  html_elements("td")  %>%  .[-seq(1, to = 30, by = 6)] %>% html_element("a")
   df <- data.frame(matrix(rep(NA, 25), nrow = 5))
 
-    for (i in 1:5) {
+  for (i in 1:5) {
     for (j in 1:5) {
       n <- ((i - 1) * 5) + j
       if (is.na(links[n])) {
@@ -129,7 +129,7 @@ get_xbrl_table <- function(company_symbol) {
     tidyr::pivot_longer(-period, names_to = "year", values_to = "link") %>%
     dplyr::mutate(statement = paste0(period, "-", year))
 
-return(results)
+  return(results)
 }
 
 
@@ -151,11 +151,11 @@ get_available_xbrl_statements <- function(xbrl_statement, period) {
 
     statements <- p %>% html_elements("body div[style]") %>% html_attr("class")
     statements[-which(statements %in% c("logo-div"))]
-    }else {
-      message("No statements are available for the selected period")
-      NULL
-    }
+  }else {
+    message("No statements are available for the selected period")
+    NULL
   }
+}
 
 #' XBRL Financial Statement Extractor
 #'
@@ -175,17 +175,17 @@ get_statement_xbrl <- function(company_symbol, period, statement_type = NULL) {
 
   xbrl_table <- get_xbrl_table(company_symbol)
   if (!is.null(xbrl <- get_available_xbrl_statements(xbrl_table, period))) {
-       p <- read_html(paste0(constants$domain, xbrl_table[which(xbrl_table$statement == period), "link"]))
+    p <- read_html(paste0(constants$domain, xbrl_table[which(xbrl_table$statement == period), "link"]))
 
-       if (!is.null(statement_type)) {
-         p %>% html_element(css = paste0("div.", statement_type)) %>% html_table(header = TRUE)
+    if (!is.null(statement_type)) {
+      p %>% html_element(css = paste0("div.", statement_type)) %>% html_table(header = TRUE)
 
-         } else {
-           chosen_statement <- menu(choices = xbrl)
-           p %>% html_element(css = paste0("div.", xbrl[chosen_statement])) %>% html_table(header = TRUE)
-      }
-    }else {
-    NULL
+    } else {
+      chosen_statement <- menu(choices = xbrl)
+      p %>% html_element(css = paste0("div.", xbrl[chosen_statement])) %>% html_table(header = TRUE)
     }
+  }else {
+    NULL
+  }
 }
 # nolint end

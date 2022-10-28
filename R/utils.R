@@ -8,7 +8,7 @@
 #'
 #' @return This Function returns error message if any of the checks failed.
 #'
-validate_input <- function(start_date, end_date, company_symbol = "omit") {
+validate_input <- function(start_date, end_date, company_symbol = NULL) {
 
   for (str in list(start_date,end_date)) {
     if (!assertthat::is.string(str)) {
@@ -19,7 +19,7 @@ validate_input <- function(start_date, end_date, company_symbol = "omit") {
     }
   }
 
-  if (company_symbol != "omit") {
+  if (!is.null(company_symbol)) {
     if (!assertthat::is.number(company_symbol) || !grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
       stop("Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010")
     }
@@ -53,7 +53,7 @@ date_elements <- function(date_str) {
 #' tasi:::num_format("200,000")
 #'
 num_format <- function(num) {
-  stringr::str_extract_all(pattern = "(^-)?[0-9]", string = num, simplify = TRUE) %>%
+  stringr::str_extract_all(pattern = "(^-)?[0-9.]",string = num, simplify = TRUE) %>%
     paste0(collapse = "") %>%
     as.numeric()
 }
@@ -94,38 +94,14 @@ df_to_xts <- function(x) {
 format_df <- function(df, type = "index") {
   if (type == "company") {
     df$transactionDate <- strptime(df$transactionDate, format = "%b %e, %Y")
-    df$previousClosePrice <- as.numeric(df$previousClosePrice)
-    df$todaysOpen <- as.numeric(df$todaysOpen)
-    df$highPrice <- as.numeric(df$highPrice)
-    df$lowPrice <- as.numeric(df$lowPrice)
-    df$volumeTraded <- as.numeric(df$volumeTraded)
-    df$turnOver <- as.numeric(df$turnOver)
-    df$noOfTrades <- as.numeric(df$noOfTrades)
-    df$lastTradePrice <- as.numeric(df$lastTradePrice)
-    df$change <- as.numeric(df$change)
-    df$changePercent <- as.numeric(df$changePercent)
+    df[,3:ncol(df)] <- apply(df[,-c(1,2)],c(1,2),num_format)
     return(df[order(as.Date(df$transactionDate)), ])
-  } else if (type == "msci") {
-    df$date <- strptime(df$date, format = "%Y/%m/%d")
-    df$high <- num_format(df$high)
-    df$open <- num_format(df$open)
-    df$low <- num_format(df$low)
-    df$close <- num_format(df$close)
-    df$noOfTrades <- 0
-    df$totalVolume <- 0
-    return(df[order(as.Date(df$date)), ])
   } else {
     df$date <- strptime(df$date, format = "%Y/%m/%d")
-    df$high <- num_format(df$high)
-    df$open <- num_format(df$open)
-    df$low <- num_format(df$low)
-    df$close <- num_format(df$close)
-    df$noOfTrades <- num_format(df$noOfTrades)
-    df$totalTurnover <- num_format(df$totalTurnover)
-    df$totalVolume <- num_format(df$totalVolume)
+    df[,2:ncol(df)] <- apply(df[,-1],c(1,2),num_format)
     return(df[order(as.Date(df$date)), ])
   }
-  }
+}
 
 #' Add adjusted prices to dividens to an xts object
 #'
@@ -152,16 +128,16 @@ add_adj_price <- function(x, symbol) {
     x$Adjusted <- x$Close
   }
   return(x)
-  }
+}
 
 industry_parser <- function(p, from_date, to_date, industry) {
-    from_date <- date_elements(from_date)
-    to_date <- date_elements(to_date)
-    return(
-      paste(
-        constants[industry], p, "&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&sourceCallerId=datePicker&dateParameter=", from_date$Y, "%2F", from_date$M, "%2F", from_date$D, "+-+", to_date$Y, "%2F", to_date$M, "%2F", to_date$D, "&typeOfCall=", "adjustedType", sep = ""
-      )
+  from_date <- date_elements(from_date)
+  to_date <- date_elements(to_date)
+  return(
+    paste(
+      constants[industry], p, "&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&sourceCallerId=datePicker&dateParameter=", from_date$Y, "%2F", from_date$M, "%2F", from_date$D, "+-+", to_date$Y, "%2F", to_date$M, "%2F", to_date$D, "&typeOfCall=", "adjustedType", sep = ""
     )
+  )
 }
 
 # nolint end

@@ -1,8 +1,8 @@
 # nolint start: line_length_linter, object_name_linter.
 #' Data Crawler
 #'
-#' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
-#' @param end_date The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
+#' @param startDate The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
+#' @param endDate The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param adjustPeriod This is logical term. If TRUE prices based on prior to adjustment.
 #'
 #' @return : data frame of the TASI index

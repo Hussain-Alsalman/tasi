@@ -10,9 +10,9 @@ get_consumer_services(start_date, end_date, use_cache = TRUE)
 \arguments{
 \item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
-\item{use_cache}{logical operator for using cached data}
+\item{end_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
-\item{emd_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+\item{use_cache}{logical operator for using cached data}
 }
 \value{
 Data frame of the Consumer Services Index

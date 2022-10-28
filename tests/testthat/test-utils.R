@@ -34,14 +34,14 @@ test_that("Input Validation Works", {
 test_that("Number Formatting Works", {
   num_1 <- "123,453,23"
   num_2 <- 32436
-  num_3 <- "234-32K"
+  num_3 <- "2.34-32K"
   num_4 <- "$ 32,45"
   num_5 <- "$ 3^2,45"
   num_6 <- "-32,452  "
 
   expect_equal(num_format(num_1), 12345323)
   expect_equal(num_format(num_2), 32436)
-  expect_equal(num_format(num_3), 23432)
+  expect_equal(num_format(num_3), 2.3432)
   expect_equal(num_format(num_4), 3245)
   expect_equal(num_format(num_5), 3245)
   expect_equal(num_format(num_6), -32452)
