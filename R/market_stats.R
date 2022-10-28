@@ -18,10 +18,8 @@ cl_col_names <- tbl[1, ] %>%
 
 colnames(tbl) <- cl_col_names
 tbl <- tbl[-1, ]
-tbl <- tbl %>%
-  dplyr::mutate(percent_change = stringr::str_remove_all(percent_change, pattern = "%")) %>%
-  dplyr::mutate(dplyr::across(.cols = 2:10, .fns = num_format)) %>%
-  dplyr::mutate(company = stringr::str_trim(stringr::str_remove_all(company, pattern = "\\*")))
+tbl[,2:ncol(tbl)] <- apply(tbl[,-1], c(1,2), tasi:::num_format)
+
 
 tbl <- tbl %>%
   dplyr::left_join(tasi::stock_indices, by = c("company" = "tradingNameEn"))
