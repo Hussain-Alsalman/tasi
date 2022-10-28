@@ -10,7 +10,7 @@
 #'
 validate_input <- function(start_date, end_date, company_symbol = "omit") {
 
-  for (str in c(start_date,end_date)) {
+  for (str in list(start_date,end_date)) {
     if (!assertthat::is.string(str)) {
       stop("Date provided is not a string. Please provide date as string in 'yyyy-mm-dd' format")
       }
@@ -20,8 +20,8 @@ validate_input <- function(start_date, end_date, company_symbol = "omit") {
   }
 
   if (company_symbol != "omit") {
-    if (!grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
-      stop("Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'")
+    if (!assertthat::is.number(company_symbol) || !grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
+      stop("Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010")
     }
   }
 }
@@ -53,7 +53,9 @@ date_elements <- function(date_str) {
 #' tasi:::num_format("200,000")
 #'
 num_format <- function(num) {
-  as.numeric(gsub(",", "", num))
+  stringr::str_extract_all(pattern = "(^-)?[0-9]", string = num, simplify = TRUE) %>%
+    paste0(collapse = "") %>%
+    as.numeric()
 }
 
 
