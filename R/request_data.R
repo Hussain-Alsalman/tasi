@@ -7,20 +7,44 @@
 #'
 #' @return : data frame of the TASI index
 request_data <- function(startDate, endDate, type, company_symbol = NULL, adjustPeriod = FALSE) {
-
   setup_caching_folders()
   validate_input(startDate, endDate, company_symbol)
+  startDate = legacy_date(startDate)
+  endDate = legacy_date(endDate)
 
-  record_limit <- ifelse(type == "company", 30, 10)
-  nRecords <-  rjson::fromJSON(file = parseURL(0, startDate, endDate, type = type, comSymbol = company_symbol, adjustment = adjustPeriod))$recordsFiltered
-  ifelse(nRecords <= record_limit, nPages <- 1, nPages <- ceiling(nRecords / record_limit))
+  period <- difftime(as.Date(endDate, tryFormats = c("%m/%d/%Y")),as.Date(startDate, tryFormats = c("%m/%d/%Y")), units = "days")
+  period = as.integer(period)
+  inx <- seq(from = 1, to = period, by = 25)
   fullData <- data.frame(stringsAsFactors = FALSE)
-
-  for (i in 0:nPages) {
-    jsonData <- rjson::fromJSON(file = parseURL((i * record_limit), startDate, endDate, type = type, comSymbol = company_symbol, adjustment = adjustPeriod))
-    p.table <- t(sapply(jsonData$data, function(x) unlist(x)))
+  if (length(inx) <= 2) {
+    jsonData <- rjson::fromJSON(
+      file = parseURL(
+        startDate = startDate,
+        endDate = endDate,
+        comp_symbol = company_symbol,
+        startIndex = 1,
+        endIndex = 26,
+        type = type,
+        adjusted = adjustPeriod)
+      )
+    p.table <- t(sapply(rjson::fromJSON(jsonData$performanceBean), function(x) unlist(x)))
     fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
-  }
+    } else {
+        for (i in 1:(length(inx) - 1)) {
+          jsonData <- rjson::fromJSON(
+            file = parseURL(
+              startDate = startDate,
+              endDate = endDate,
+              comp_symbol = company_symbol,
+              startIndex = inx[i],
+              endIndex = inx[i + 1],
+              type = type,
+              adjusted = adjustPeriod)
+          )
+          p.table <- t(sapply(rjson::fromJSON(jsonData$performanceBean), function(x) unlist(x)))
+          fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
+        }
+      }
   fullData <- format_df(fullData, type = type)
   return(fullData)
 }

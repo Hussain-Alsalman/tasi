@@ -5,7 +5,6 @@ library("readr")
 
 #Obtain all Data
 all_symbols <- rjson::fromJSON(file = "https://www.saudiexchange.sa/tadawul.eportal.theme.helper/ThemeSearchUtilityServlet")
-
 # Extract Column Names
 col_names <- unique(unlist(sapply(all_symbols, function(x) names(x))))
 
@@ -20,9 +19,9 @@ for (i in seq_along(col_names)) {
 }
 
 # Obtain supplemental information for each company
-df_supplement <- rjson::fromJSON(file = "https://www.saudiexchange.sa/wps/portal/tadawul/markets/equities/indices/today/!ut/p/z1/rZLRTsIwFIafxYteSs9gAfVuIWHWTBICw9mbpesaqdnapT04eHsHdyZSNHrumvN9af6_pZwWlBvxod8EamtEM5xf-bQcj-d30X0MGWSzCJJpCmz1HE_SBdCXEABpRPmv_JQtZ5CsksftYrsZ_MnffIh_5sOFSeC6z4PIMgoD54q-At90EAROIc9AIMVaGfp0Lcvw2DvE7oEAgb7vR7pqR9K2BA5tYzyBztmaQC1Q4LFTBKQ1qAwScMrbvZPqVtqmUfL0dzzlKCpmanWgRaY9qnpu204Yrfx_XyR3wmGJwutS7p0byNIPS-tosUnWjHZtnucFaPYe8-rY33wCjfF_BA!!/p0/IZ7_NHLCH082KGN530A68FC4AN2OE0=CZ6_22C81940L0L710A6G0IQM43GF0=NEchart_tasi_current_sector!TASI==/!?_=1616168200088")
-df_supplement <- t(sapply(df_supplement$data, function(x) unlist(x)))
-df_supplement <- as.data.frame(df_supplement)
+df_supplement <- rjson::fromJSON(file = "https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziTR3NDIw8LAz8LVxcnA0C3bwtPLwM_I0MzMz1w1EVGAQHmAIVBPga-xgEGbgbmOlHEaPfAAdwNCCsPwpNia-7mUGgn2Ogv5G5qYFBsBG6AixOBCvA44bg1Dz9gtzQCIPMgHQAsqCDtA!!/p0/IZ7_5A602H80OOMQC0604RU6VD10H0=CZ6_5A602H80O8DDC0QFK8HJ0O2067=NJgetMainNomucMarketDetails=/",simplify = FALSE)
+col_names <- names(df_supplement$data[[1]])
+df_supplement <- purrr::map_dfr(df_supplement$data,magrittr::extract, col_names)
 
 # Split Data into Different Subsets
 stock_indices_partial <- df %>%
@@ -35,9 +34,12 @@ bonds_indices <- df %>%
 
 stock_indices <- df_supplement %>%
   select(-companyName) %>%
-  left_join(stock_indices_partial, by = "symbol") %>%
-  mutate(across(.cols = everything(), .fns = trimws))
+  left_join(stock_indices_partial, by = c("companySymbol" = "symbol")) %>%
+  mutate(across(.cols = everything(), .fns = trimws)) %>%
+  select(-colnames(.[5:42])) %>%
+  unique()
 
 #write in the Stock market Data
 usethis::use_data(stock_indices, bonds_indices, overwrite = TRUE)
 # nolint end
+

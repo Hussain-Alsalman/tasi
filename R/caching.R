@@ -28,7 +28,7 @@ check_cached_company <- function(start_date, end_date, symbol) {
       df <- df[which(
         as.Date(df$transactionDate) >= start_date
       ), ]
-      add_df <- get_company_records(start_date = max_cached_date, end_date = end_date, company_symbol = symbol, use_cache = FALSE)
+      add_df <- get_company_records(start_date = as.character(max_cached_date), end_date = end_date, company_symbol = symbol, use_cache = FALSE)
       complete_df <- rbind(add_df, df)
       complete_df <- complete_df[order(as.Date(complete_df$transactionDate)), ]
       return(list(df = complete_df[!duplicated(complete_df), ],

@@ -10,11 +10,11 @@
 #'
 validate_input <- function(start_date, end_date, company_symbol = "omit") {
 
-  for (str in list(start_date,end_date)) {
-    if (!assertthat::is.string(str)) {
+  for (date_str in list(start_date, end_date)) {
+    if (!assertthat::is.string(date_str)) {
       stop("Date provided is not a string. Please provide date as string in 'yyyy-mm-dd' format")
       }
-    if (!grepl(pattern = "[1-2][0-9]{3}-[0-1][0-9]-[0-9]{2}", x = str)) {
+    if (!grepl(pattern = "[1-2][0-9]{3}-[0-1][0-9]-[0-9]{2}", x = date_str)) {
       stop("Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'")
     }
   }
@@ -24,6 +24,19 @@ validate_input <- function(start_date, end_date, company_symbol = "omit") {
       stop("Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010")
     }
   }
+}
+
+#' Converting legacy date format into the new format
+#'
+#' @param leg_date string in date format 'yyyy-mm-dd'
+#'
+#' @return string in date format 'mm/dd/yyyy'
+
+legacy_date <- function(leg_date) {
+  y <- substr(leg_date, 1,4)
+  m <- substr(leg_date, 6,7)
+  d <- substr(leg_date, 9,10)
+  return(paste(m,d,y,sep = "/"))
 }
 
 #' Date element extractor
@@ -71,8 +84,8 @@ num_format <- function(num) {
 #' df <- get_company_records("2020-01-01", "2020-12-31", 2222)
 #' df_to_xts(df)
 df_to_xts <- function(x) {
-  if (all(c("date", "high", "open", "low",  "close", "totalVolume", "totalTurnover", "noOfTrades") %in% colnames(x))) {
-    colnames(x)[1:6] <-  c("Date", "High", "Open", "Low", "Close", "Volume")
+  if (all(c("transactionDate", "highPrice", "todaysOpen", "lowPrice",  "lastTradePrice", "volumeTraded", "turnOver", "noOfTrades") %in% colnames(x))) {
+    colnames(x)[c(1:4,6,11)] <-  c("Date","Open", "High", "Low", "Volume","Close")
     x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
     x <- xts::convertIndex(x = x, value = "POSIXct")
     return(x)
@@ -93,17 +106,17 @@ df_to_xts <- function(x) {
 #'
 format_df <- function(df, type = "index") {
   if (type == "company") {
-    df$transactionDate <- strptime(df$transactionDate, format = "%b %e, %Y")
+    df$transactionDate <- strptime(df$transactionDateStr, format = "%Y-%m-%d")
     df$previousClosePrice <- as.numeric(df$previousClosePrice)
     df$todaysOpen <- as.numeric(df$todaysOpen)
     df$highPrice <- as.numeric(df$highPrice)
     df$lowPrice <- as.numeric(df$lowPrice)
-    df$volumeTraded <- as.numeric(df$volumeTraded)
-    df$turnOver <- as.numeric(df$turnOver)
-    df$noOfTrades <- as.numeric(df$noOfTrades)
+    df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
+    df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
+    df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
     df$lastTradePrice <- as.numeric(df$lastTradePrice)
-    df$change <- as.numeric(df$change)
-    df$changePercent <- as.numeric(df$changePercent)
+    df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
+    df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
     return(df[order(as.Date(df$transactionDate)), ])
   } else if (type == "msci") {
     df$date <- strptime(df$date, format = "%Y/%m/%d")
@@ -137,15 +150,22 @@ format_df <- function(df, type = "index") {
 #'
 #'
 #' @import magrittr
-add_adj_price <- function(x, symbol) {
+add_adj_price <- function(x, symbol, start_date, end_date) {
+  req <-  httr::POST(constants$dividens, body = list(
+   symbolorcompany = symbol,
+   start = start_date,
+   end = end_date,
+   marketsListId = "M",
+   sector = "",
+   period = "CUSTOM"
+   ),
+  encode = "form")
+  df <- httr::content(req,type = "application/json")
+  df <- t(sapply(df$data, function(x) unlist(x)))
+  df <- as.data.frame(df)
   if (!xts::is.xts(x)) x <- df_to_xts(x)
-  dividens_table <- rvest::read_html(paste0(constants$dividens, symbol)) %>% rvest::html_elements("#dividendsTable")  %>%  rvest::html_table()
 
-  if (length(inx_na <- which(dividens_table[[1]]$`Distribution Date` == "N/A")) > 0) {
-    dividens_table[[1]]$`Distribution Date`[inx_na] <- dividens_table[[1]]$`Due Date`[inx_na]
-  }
-
-  divdns_xts <- xts::as.xts(dividens_table[[1]]$Amount, order.by = strptime(dividens_table[[1]]$`Distribution Date`, format = "%Y/%m/%d"))
+  divdns_xts <- xts::as.xts(as.numeric(df$amountValue), order.by = strptime(df$distributionDate, format = "%Y-%m-%d"))
   if (length(divdns_xts) > 0) {
     x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
   } else {
