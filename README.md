@@ -3,6 +3,8 @@
 
 # `tasi` <img src="inst/figures/tasi_logo.png" align="right" height="139"/>
 
+<span style="color:red">package is under major update</span>
+
 <!-- badges: start -->
 <!-- badges: end -->
 
