@@ -4,7 +4,7 @@
 \alias{validate_input}
 \title{Validating input function}
 \usage{
-validate_input(start_date, end_date, company_symbol = "omit")
+validate_input(start_date, end_date, company_symbol = NULL)
 }
 \arguments{
 \item{start_date}{Date to be validated.}

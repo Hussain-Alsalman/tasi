@@ -8,7 +8,7 @@
 #'
 #' @return This Function returns error message if any of the checks failed.
 #'
-validate_input <- function(start_date, end_date, company_symbol = "omit") {
+validate_input <- function(start_date, end_date, company_symbol = NULL) {
 
   for (date_str in list(start_date, end_date)) {
     if (!assertthat::is.string(date_str)) {
@@ -18,8 +18,7 @@ validate_input <- function(start_date, end_date, company_symbol = "omit") {
       stop("Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'")
     }
   }
-
-  if (company_symbol != "omit") {
+  if (!is.null(company_symbol)) {
     if (!assertthat::is.number(company_symbol) || !grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
       stop("Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010")
     }
@@ -118,25 +117,17 @@ format_df <- function(df, type = "index") {
     df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
     df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
     return(df[order(as.Date(df$transactionDate)), ])
-  } else if (type == "msci") {
-    df$date <- strptime(df$date, format = "%Y/%m/%d")
-    df$high <- num_format(df$high)
-    df$open <- num_format(df$open)
-    df$low <- num_format(df$low)
-    df$close <- num_format(df$close)
-    df$noOfTrades <- 0
-    df$totalVolume <- 0
-    return(df[order(as.Date(df$date)), ])
   } else {
-    df$date <- strptime(df$date, format = "%Y/%m/%d")
-    df$high <- num_format(df$high)
-    df$open <- num_format(df$open)
-    df$low <- num_format(df$low)
-    df$close <- num_format(df$close)
-    df$noOfTrades <- num_format(df$noOfTrades)
-    df$totalTurnover <- num_format(df$totalTurnover)
-    df$totalVolume <- num_format(df$totalVolume)
-    return(df[order(as.Date(df$date)), ])
+    df$transactionDate <- strptime(df$transactionDate, format = "%Y/%m/%d")
+    df$highPrice <-as.numeric(gsub(pattern = ",", replacement = "", x = df$highPrice))
+    df$todaysOpen <-as.numeric(gsub(pattern = ",", replacement = "", x = df$todaysOpen))
+    df$lowPrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$lowPrice))
+    df$previousClosePrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$previousClosePrice))
+    df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
+    df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
+    df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
+
+    return(df[order(as.Date(df$transactionDate)), ])
   }
   }
 
@@ -151,7 +142,7 @@ format_df <- function(df, type = "index") {
 #'
 #' @import magrittr
 add_adj_price <- function(x, symbol, start_date, end_date) {
-  req <-  httr::POST(constants$dividens, body = list(
+  req <-  httr::POST(paste0(constants$dividends_base_url,constants$dividends_unique_key,constants$dividens), body = list(
    symbolorcompany = symbol,
    start = start_date,
    end = end_date,
@@ -161,10 +152,13 @@ add_adj_price <- function(x, symbol, start_date, end_date) {
    ),
   encode = "form")
   df <- httr::content(req,type = "application/json")
-  df <- t(sapply(df$data, function(x) unlist(x)))
-  df <- as.data.frame(df)
+  df <- purrr::map(df$data, function(x) as.data.frame(t(unlist(x)))) |>
+      purrr::list_rbind()
   if (!xts::is.xts(x)) x <- df_to_xts(x)
 
+  if (length(inx_na <- which(is.na(df$distributionDate))) > 0 ) {
+    df$distributionDate[inx_na] <- df$announcedDate[inx_na]
+  }
   divdns_xts <- xts::as.xts(as.numeric(df$amountValue), order.by = strptime(df$distributionDate, format = "%Y-%m-%d"))
   if (length(divdns_xts) > 0) {
     x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
@@ -174,14 +168,6 @@ add_adj_price <- function(x, symbol, start_date, end_date) {
   return(x)
   }
 
-industry_parser <- function(p, from_date, to_date, industry) {
-    from_date <- date_elements(from_date)
-    to_date <- date_elements(to_date)
-    return(
-      paste(
-        constants[industry], p, "&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&sourceCallerId=datePicker&dateParameter=", from_date$Y, "%2F", from_date$M, "%2F", from_date$D, "+-+", to_date$Y, "%2F", to_date$M, "%2F", to_date$D, "&typeOfCall=", "adjustedType", sep = ""
-      )
-    )
-}
+
 
 # nolint end

@@ -30,6 +30,7 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
     p.table <- t(sapply(rjson::fromJSON(jsonData$performanceBean), function(x) unlist(x)))
     fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
     } else {
+      pb <- progress::progress_bar$new(total = length(inx) - 1, format = ":elapsed [:bar] :percent")
         for (i in 1:(length(inx) - 1)) {
           jsonData <- rjson::fromJSON(
             file = parseURL(
@@ -43,8 +44,9 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
           )
           p.table <- t(sapply(rjson::fromJSON(jsonData$performanceBean), function(x) unlist(x)))
           fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
+          pb$tick()
         }
-      }
+    }
   fullData <- format_df(fullData, type = type)
   return(fullData)
 }

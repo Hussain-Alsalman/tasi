@@ -13,7 +13,7 @@
 #'
 get_index_records <- function(start_date, end_date, use_cache = TRUE) {
 
-  validate_input(startDate, endDate)
+  validate_input(start_date, end_date)
 
   if (use_cache) {
     cache <- check_cached_index(start_date = start_date, end_date = end_date, index_type = "index")
@@ -23,31 +23,8 @@ get_index_records <- function(start_date, end_date, use_cache = TRUE) {
   if (cache$is_cached) {
     return(cache$df)
   } else {
-  cutoffDate <- strptime("2008-04-02", format = "%Y-%m-%d")
-  stY <- strptime(start_date, format = "%Y-%m-%d")
-  endY <- strptime(end_date, format = "%Y-%m-%d")
-
-  if (stY <= cutoffDate && endY <= cutoffDate) {
-    period <- "AllBeforeRestructure"
-    df <- request_data(startDate = start_date, endDate = end_date, type = "index", company_symbol = NULL, adjustPeriod = TRUE)
-    cach_me_index(df, index_type = "index")
+    df <- request_data(startDate = start_date, endDate = end_date,type = "index",company_symbol = NULL)
     return(df)
-  }
-  if ((stY <= cutoffDate && endY > cutoffDate)) {
-    period <- "Combination"
-    oldPart <- request_data(startDate = start_date, endDate = "2008-04-02", type = "index", company_symbol = NULL, adjustPeriod = TRUE)
-    newPart <- request_data(startDate = "2008-04-05", endDate = end_date, type = "index", company_symbol = NULL, adjustPeriod = FALSE)
-    oldPart$close * 0.9801111
-    df <- rbind(oldPart, newPart)
-    cach_me_index(df, index_type = "index")
-    return(df)
-    }
-  if ((stY > cutoffDate)) {
-    period <- "NewIndex"
-    df <- request_data(startDate = start_date, endDate = end_date, type = "index", company_symbol = NULL, adjustPeriod = FALSE)
-    cach_me_index(df, index_type = "index")
-    return(df)
-  }
   }
 }
 # nolint end

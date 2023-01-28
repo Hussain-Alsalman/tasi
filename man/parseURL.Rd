@@ -30,6 +30,9 @@ parseURL(
 
 \item{adjusted}{adjustment string variable. Options are "yes or "no"}
 }
+\value{
+parsed url link for data
+}
 \description{
 Parsing URL call
 This function construct the URL string used to request data from TADAWUL website.

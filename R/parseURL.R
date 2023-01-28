@@ -11,36 +11,37 @@
 #' @param type Type of URL cal. Choices are "company" or "index"
 #' @param adjusted adjustment string variable. Options are "yes or "no"
 #'
-#' @return
-#' @export
+#' @return parsed url link for data
 #'
-#' @examples
 parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type, adjusted = FALSE) {
+  prams <- list()
+
   if (type == "company") {
+    prams$market <- "MAIN"
+    prams$sector <- "0"
+    prams$entity <- comp_symbol
+  } else if ( type == "index") {
+    prams$market <- "INDICES"
+    prams$sector <- "M"
+    prams$entity <- "M:TASI"
+  } else {
+    prams$market <- "INDICES"
+    prams$sector <- "M"
+    prams$entity <- paste("M:",constants[type], sep = "")
+  }
     return(
-      paste(constants$comp,
-            comp_symbol,
+      paste(constants$records_base_url,
+            constants$records_unique_key,
+            constants$records,
+            "?selectedMarket=",prams$market,
+            "&selectedSector=",prams$sector,
+            "&selectedEntity=",prams$entity,
             "&startDate=",startDate,
             "&endDate=", endDate,
             "tableTabId=",ifelse(adjusted,0,1),
             "&startIndex=",startIndex,
             "&endIndex=",endIndex, sep = "")
-    )
-  }
-  if (type == "index") {
-    from_date <- date_elements(fromDate)
-    to_date <- date_elements(toDate)
-
-    return(
-      paste(
-        constants$mrk, p, "&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&sourceCallerId=datePicker&dateParameter=", from_date$Y, "%2F", from_date$M, "%2F", from_date$D, "+-+", to_date$Y, "%2F", to_date$M, "%2F", to_date$D, "&typeOfCall=",
-        ifelse(adjustment, "nonAdjustedType&old_tasi_current_sector=TASI", "adjustedType"), sep = ""
       )
-    )
-  }
-  if (type != "company" && type != "index") {
-    industry_parser(p, from_date = fromDate, to_date = toDate, industry = type)
-  }
 }
 
 

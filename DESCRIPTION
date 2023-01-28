@@ -18,7 +18,9 @@ Imports:
     dplyr,
     magrittr,
     rvest,
-    tibble
+    tibble,
+    httr, 
+    progress
 Depends: 
     R (>= 2.10)
 Suggests: 
