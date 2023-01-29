@@ -6,6 +6,12 @@
 \usage{
 industry_func(industry)
 }
+\arguments{
+\item{industry}{a character scaler with industry defined names. Can be obtained from \code{list_industries()}}
+}
+\value{
+returns a function that can be used to obtain historical records of specific industry
+}
 \description{
 Industry Function Factory
 }
@@ -15,4 +21,9 @@ it has the following parameters.
 start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
 end_date The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
 use_cache logical operator for using cached data
+}
+\examples{
+get_banks <- industry_func("banks")
+
+
 }

@@ -32,10 +32,8 @@ validate_input <- function(start_date, end_date, company_symbol = NULL) {
 #' @return string in date format 'mm/dd/yyyy'
 
 legacy_date <- function(leg_date) {
-  y <- substr(leg_date, 1,4)
-  m <- substr(leg_date, 6,7)
-  d <- substr(leg_date, 9,10)
-  return(paste(m,d,y,sep = "/"))
+  str_date <- date_elements(leg_date)
+  return(paste(str_date$M, str_date$D, str_date$Y, sep = "/"))
 }
 
 #' Date element extractor
@@ -83,17 +81,18 @@ num_format <- function(num) {
 #' df <- get_company_records("2020-01-01", "2020-12-31", 2222)
 #' df_to_xts(df)
 df_to_xts <- function(x) {
-  if (all(c("transactionDate", "highPrice", "todaysOpen", "lowPrice",  "lastTradePrice", "volumeTraded", "turnOver", "noOfTrades") %in% colnames(x))) {
-    colnames(x)[c(1:4,6,11)] <-  c("Date","Open", "High", "Low", "Volume","Close")
+  x <- x[,c("transactionDate",
+       "todaysOpen",
+       "highPrice",
+       "lowPrice",
+       ifelse(!"lastTradePrice" %in% colnames(x), "previousClosePrice", "lastTradePrice"),
+       "volumeTraded")]
+   colnames(x)  <- c("Date","Open", "High", "Low","Close", "Volume")
+
     x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
     x <- xts::convertIndex(x = x, value = "POSIXct")
     return(x)
-  }else {
-  colnames(x)[c(1, 4:7, 12)] <- c("Date", "Open", "High", "Low", "Volume", "Close")
-  x <- xts::as.xts(x = x[, c("Open", "High", "Low", "Volume", "Close")], order.by = x$Date)
-  x <- xts::convertIndex(x = x, value = "POSIXct")
-  return(x)
-  }
+
 }
 
 #' Title
@@ -104,31 +103,24 @@ df_to_xts <- function(x) {
 #' @return formatted data frame
 #'
 format_df <- function(df, type = "index") {
+  df$transactionDate <- strptime(df$transactionDateStr, format = "%Y-%m-%d")
+  df$previousClosePrice <- as.numeric(df$previousClosePrice)
+  df$todaysOpen <- as.numeric(df$todaysOpen)
+  df$highPrice <- as.numeric(df$highPrice)
+  df$lowPrice <- as.numeric(df$lowPrice)
+  df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
+  df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
+  df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
+
   if (type == "company") {
-    df$transactionDate <- strptime(df$transactionDateStr, format = "%Y-%m-%d")
-    df$previousClosePrice <- as.numeric(df$previousClosePrice)
-    df$todaysOpen <- as.numeric(df$todaysOpen)
-    df$highPrice <- as.numeric(df$highPrice)
-    df$lowPrice <- as.numeric(df$lowPrice)
-    df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
-    df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
-    df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
     df$lastTradePrice <- as.numeric(df$lastTradePrice)
     df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
     df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
-    return(df[order(as.Date(df$transactionDate)), ])
-  } else {
-    df$transactionDate <- strptime(df$transactionDate, format = "%Y/%m/%d")
-    df$highPrice <-as.numeric(gsub(pattern = ",", replacement = "", x = df$highPrice))
-    df$todaysOpen <-as.numeric(gsub(pattern = ",", replacement = "", x = df$todaysOpen))
-    df$lowPrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$lowPrice))
-    df$previousClosePrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$previousClosePrice))
-    df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
-    df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
-    df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
-
-    return(df[order(as.Date(df$transactionDate)), ])
   }
+  if (!"lastTradePrice" %in% colnames(df)) {
+    df <- df[,c(1,4:7,2:3,8:9)]
+    }
+    return(df[order(as.Date(df$transactionDate)), ] |> unique())
   }
 
 #' Add adjusted prices to dividens to an xts object
