@@ -28,7 +28,7 @@ check_cached_company <- function(start_date, end_date, symbol) {
       df <- df[which(
         as.Date(df$transactionDate) >= start_date
       ), ]
-      add_df <- get_company_records(start_date = max_cached_date, end_date = end_date, company_symbol = symbol, use_cache = FALSE)
+      add_df <- get_company_records(start_date = as.character(max_cached_date), end_date = end_date, company_symbol = symbol, use_cache = FALSE)
       complete_df <- rbind(add_df, df)
       complete_df <- complete_df[order(as.Date(complete_df$transactionDate)), ]
       return(list(df = complete_df[!duplicated(complete_df), ],
@@ -71,24 +71,25 @@ check_cached_index <- function(start_date, end_date, index_type) {
   dir_path <- system.file("index_records", package = "tasi")
   if (file.exists(file.path(dir_path, paste0(index_type, ".rds")))) {
     df <- readRDS(file.path(dir_path, paste0(index_type, ".rds")))
-    min_cached_date <- min(as.Date(df$date))
-    max_cached_date <- max(as.Date(df$date))
+    min_cached_date <- min(as.Date(df$transactionDate))
+    max_cached_date <- max(as.Date(df$transactionDate))
 
     if (start_date >= min_cached_date &&
         end_date <= max_cached_date) {
       return(list(df = df[which(
-         as.Date(df$date) >= start_date &
-          as.Date(df$date) <= end_date
+         as.Date(df$transactionDate) >= start_date &
+          as.Date(df$transactionDate) <= end_date
       ), ],
       is_cached = TRUE))
     } else if (end_date > max_cached_date && start_date >= min_cached_date) {
       df <- readRDS(file.path(dir_path, paste0(index_type, ".rds")))
       df <- df[which(
-        as.Date(df$date) >= start_date
+        as.Date(df$transactionDate) >= start_date
       ), ]
-      add_df <- get_index_records(start_date = max_cached_date, end_date = end_date, use_cache = FALSE)
+      get_indst <- industry_func(index_type)
+      add_df <-  get_indst(start_date = as.character(max_cached_date), end_date = end_date, use_cache = FALSE)
       complete_df <- rbind(add_df, df)
-      complete_df <- complete_df[order(as.Date(complete_df$date)), ]
+      complete_df <- complete_df[order(as.Date(complete_df$transactionDate)), ]
       return(list(df = complete_df[!duplicated(complete_df), ],
                   is_cached = TRUE)
       )

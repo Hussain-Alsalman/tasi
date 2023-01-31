@@ -33,11 +33,13 @@ devtools::install_github("Hussain-Alsalman/tasi")
 This is a basic example which shows you how to obtain and plot  TASI historical performance for the past year:
 
 ```{r basic example}
+
 library("tasi")
+library("ggplot2")
+library("magrittr")
 
-df <- get_index_records("2020-01-01","2021-01-30")
-
-plot(df$date, df$close,xlab = "Date", ylab = "TASI points",type = "l")
+df <- get_index_records("2020-02-03","2021-01-02")
+df %>%  ggplot(mapping = aes(x = as.POSIXct(transactionDate), y = previousClosePrice)) + geom_line()
 
 ```
 

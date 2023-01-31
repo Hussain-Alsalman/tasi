@@ -4,7 +4,7 @@
 \alias{add_adj_price}
 \title{Add adjusted prices to dividens to an xts object}
 \usage{
-add_adj_price(x, symbol)
+add_adj_price(x, symbol, start_date, end_date)
 }
 \arguments{
 \item{x}{xts object (data frames will be converted to xts)}

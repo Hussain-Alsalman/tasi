@@ -4,7 +4,7 @@
 \alias{get_fin_statement}
 \title{General Function to obtain Financial Statements (No XBRL parsing)}
 \usage{
-get_fin_statement(company_symbol, period_type = "q", statement)
+get_fin_statement(company_symbol, period_type = "y", statement)
 }
 \arguments{
 \item{company_symbol}{Company Symbol number}

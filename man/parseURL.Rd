@@ -5,23 +5,33 @@
 \title{Parsing URL call
 This function construct the URL string used to request data from TADAWUL website.}
 \usage{
-parseURL(p, fromDate, toDate, comSymbol = NULL, type, adjustment = FALSE)
+parseURL(
+  startDate,
+  endDate,
+  comp_symbol,
+  startIndex,
+  endIndex,
+  type,
+  adjusted = FALSE
+)
 }
 \arguments{
-\item{p}{pagination numeric variable}
+\item{startDate}{The start date of the query. Date is a string that needs to be in mm/dd/yyy format}
 
-\item{fromDate}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+\item{endDate}{The end date of the query. Date is a string that needs to be in mm/dd/yyy format}
 
-\item{toDate}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+\item{comp_symbol}{Company Symbol number}
 
-\item{comSymbol}{Company Symbol number}
+\item{startIndex}{start of data indexing}
+
+\item{endIndex}{end of data indexing}
 
 \item{type}{Type of URL cal. Choices are "company" or "index"}
 
-\item{adjustment}{adjustment string variable. Options are "yes or "no"}
+\item{adjusted}{adjustment string variable. Options are "yes or "no"}
 }
 \value{
-parsed URL string
+parsed url link for data
 }
 \description{
 Parsing URL call

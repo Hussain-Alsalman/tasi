@@ -10,20 +10,30 @@
 #'
 validate_input <- function(start_date, end_date, company_symbol = NULL) {
 
-  for (str in list(start_date,end_date)) {
-    if (!assertthat::is.string(str)) {
+  for (date_str in list(start_date, end_date)) {
+    if (!assertthat::is.string(date_str)) {
       stop("Date provided is not a string. Please provide date as string in 'yyyy-mm-dd' format")
       }
-    if (!grepl(pattern = "[1-2][0-9]{3}-[0-1][0-9]-[0-9]{2}", x = str)) {
+    if (!grepl(pattern = "[1-2][0-9]{3}-[0-1][0-9]-[0-9]{2}", x = date_str)) {
       stop("Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'")
     }
   }
-
   if (!is.null(company_symbol)) {
     if (!assertthat::is.number(company_symbol) || !grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
       stop("Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010")
     }
   }
+}
+
+#' Converting legacy date format into the new format
+#'
+#' @param leg_date string in date format 'yyyy-mm-dd'
+#'
+#' @return string in date format 'mm/dd/yyyy'
+
+legacy_date <- function(leg_date) {
+  str_date <- date_elements(leg_date)
+  return(paste(str_date$M, str_date$D, str_date$Y, sep = "/"))
 }
 
 #' Date element extractor
@@ -53,11 +63,8 @@ date_elements <- function(date_str) {
 #' tasi:::num_format("200,000")
 #'
 num_format <- function(num) {
-  stringr::str_extract_all(pattern = "(^-)?[0-9.]",string = num, simplify = TRUE) %>%
-    paste0(collapse = "") %>%
-    as.numeric()
+    as.numeric(gsub(pattern = ",", replacement = "", x = num))
 }
-
 
 #' Converting Data Frame to xts
 #'
@@ -71,18 +78,17 @@ num_format <- function(num) {
 #' df <- get_company_records("2020-01-01", "2020-12-31", 2222)
 #' df_to_xts(df)
 df_to_xts <- function(x) {
-  if (all(c("date", "high", "open", "low",  "close", "totalVolume", "totalTurnover", "noOfTrades") %in% colnames(x))) {
-    colnames(x)[1:6] <-  c("Date", "High", "Open", "Low", "Close", "Volume")
-    x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
-    x <- xts::convertIndex(x = x, value = "POSIXct")
-    return(x)
-  }else {
-  colnames(x)[c(1, 4:7, 12)] <- c("Date", "Open", "High", "Low", "Volume", "Close")
-  x <- xts::as.xts(x = x[, c("Open", "High", "Low", "Volume", "Close")], order.by = x$Date)
+  x <- x[,c("transactionDate",
+       "todaysOpen",
+       "highPrice",
+       "lowPrice",
+       ifelse(!"lastTradePrice" %in% colnames(x), "previousClosePrice", "lastTradePrice"),
+       "volumeTraded")]
+  colnames(x)  <- c("Date","Open", "High", "Low","Close", "Volume")
+  x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
   x <- xts::convertIndex(x = x, value = "POSIXct")
   return(x)
   }
-}
 
 #' Title
 #'
@@ -92,16 +98,26 @@ df_to_xts <- function(x) {
 #' @return formatted data frame
 #'
 format_df <- function(df, type = "index") {
+  df$previousClosePrice <- num_format(df$previousClosePrice)
+  df$todaysOpen <- num_format(df$todaysOpen)
+  df$highPrice <- num_format(df$highPrice)
+  df$lowPrice <- num_format(df$lowPrice)
+  df$volumeTraded <- num_format(df$volumeTraded)
+  df$turnOver <- num_format(df$turnOver)
+  df$noOfTrades <- num_format(df$noOfTrades)
+
   if (type == "company") {
-    df$transactionDate <- strptime(df$transactionDate, format = "%b %e, %Y")
-    df[,3:ncol(df)] <- apply(df[,-c(1,2)],c(1,2),num_format)
-    return(df[order(as.Date(df$transactionDate)), ])
-  } else {
-    df$date <- strptime(df$date, format = "%Y/%m/%d")
-    df[,2:ncol(df)] <- apply(df[,-1],c(1,2),num_format)
-    return(df[order(as.Date(df$date)), ])
+    df$transactionDate <- strptime(df$transactionDate, format = "%Y-%m-%d")
+    df$lastTradePrice <- num_format(df$lastTradePrice)
+    df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
+    df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
   }
-}
+  if (!"lastTradePrice" %in% colnames(df)) {
+    df$transactionDate <- strptime(df$transactionDate, format = "%Y/%m/%d")
+    df <- df[,c(1,4:7,2:3,8:9)]
+    }
+    return(df[order(as.Date(df$transactionDate)), ] |> unique())
+  }
 
 #' Add adjusted prices to dividens to an xts object
 #'
@@ -113,15 +129,25 @@ format_df <- function(df, type = "index") {
 #'
 #'
 #' @import magrittr
-add_adj_price <- function(x, symbol) {
+add_adj_price <- function(x, symbol, start_date, end_date) {
+  req <-  httr::POST(paste0(constants$dividends_base_url,constants$dividends_unique_key,constants$dividens), body = list(
+   symbolorcompany = symbol,
+   start = start_date,
+   end = end_date,
+   marketsListId = "M",
+   sector = "",
+   period = "CUSTOM"
+   ),
+  encode = "form")
+  df <- httr::content(req,type = "application/json")
+  df <- purrr::map(df$data, function(x) as.data.frame(t(unlist(x)))) |>
+      purrr::list_rbind()
   if (!xts::is.xts(x)) x <- df_to_xts(x)
-  dividens_table <- rvest::read_html(paste0(constants$dividens, symbol)) %>% rvest::html_elements("#dividendsTable")  %>%  rvest::html_table()
 
-  if (length(inx_na <- which(dividens_table[[1]]$`Distribution Date` == "N/A")) > 0) {
-    dividens_table[[1]]$`Distribution Date`[inx_na] <- dividens_table[[1]]$`Due Date`[inx_na]
+  if (length(inx_na <- which(is.na(df$distributionDate))) > 0 ) {
+    df$distributionDate[inx_na] <- df$announcedDate[inx_na]
   }
-
-  divdns_xts <- xts::as.xts(dividens_table[[1]]$Amount, order.by = strptime(dividens_table[[1]]$`Distribution Date`, format = "%Y/%m/%d"))
+  divdns_xts <- xts::as.xts(as.numeric(df$amountValue), order.by = strptime(df$distributionDate, format = "%Y-%m-%d"))
   if (length(divdns_xts) > 0) {
     x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
   } else {
@@ -130,14 +156,20 @@ add_adj_price <- function(x, symbol) {
   return(x)
 }
 
-industry_parser <- function(p, from_date, to_date, industry) {
-  from_date <- date_elements(from_date)
-  to_date <- date_elements(to_date)
-  return(
-    paste(
-      constants[industry], p, "&length=10&search%5Bvalue%5D=&search%5Bregex%5D=false&sourceCallerId=datePicker&dateParameter=", from_date$Y, "%2F", from_date$M, "%2F", from_date$D, "+-+", to_date$Y, "%2F", to_date$M, "%2F", to_date$D, "&typeOfCall=", "adjustedType", sep = ""
-    )
-  )
+#' List all available industries
+#'
+#' @return returns a character vector containing all industries names
+#' @details This function is to be used in conjunction with `industry_func(industry)` function.
+#' @export
+#'
+#' @examples
+#' get_banks <- industry_func(list_industries()[14])
+#' # now we have a function called get_banks()
+list_industries <- function() {
+  first_inx <- which(names(constants) == "msci30")
+  last_inx <- which(names(constants) == "real_estate")
+  names(constants[first_inx:last_inx])
 }
+
 
 # nolint end

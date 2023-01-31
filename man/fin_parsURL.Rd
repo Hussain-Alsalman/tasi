@@ -5,7 +5,7 @@
 \title{Parsing URL call for Financial Statements
 This function construct the URL string used to request data from TADAWUL website specifically for Financial Statements.}
 \usage{
-fin_parsURL(comSymbol = NULL, statement_type, period)
+fin_parsURL(comSymbol = NULL, statement_type)
 }
 \arguments{
 \item{comSymbol}{Company Symbol number}
