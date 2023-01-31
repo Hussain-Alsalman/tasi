@@ -63,11 +63,8 @@ date_elements <- function(date_str) {
 #' tasi:::num_format("200,000")
 #'
 num_format <- function(num) {
-  stringr::str_extract_all(pattern = "(^-)?[0-9]", string = num, simplify = TRUE) %>%
-    paste0(collapse = "") %>%
-    as.numeric()
+    as.numeric(gsub(pattern = ",", replacement = "", x = num))
 }
-
 
 #' Converting Data Frame to xts
 #'
@@ -87,6 +84,7 @@ df_to_xts <- function(x) {
        "lowPrice",
        ifelse(!"lastTradePrice" %in% colnames(x), "previousClosePrice", "lastTradePrice"),
        "volumeTraded")]
+
    colnames(x)  <- c("Date","Open", "High", "Low","Close", "Volume")
 
     x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
@@ -103,18 +101,17 @@ df_to_xts <- function(x) {
 #' @return formatted data frame
 #'
 format_df <- function(df, type = "index") {
-
-  df$previousClosePrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$previousClosePrice))
-  df$todaysOpen <- as.numeric(gsub(pattern = ",", replacement = "", x = df$todaysOpen))
-  df$highPrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$highPrice))
-  df$lowPrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$lowPrice))
-  df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
-  df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
-  df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
+  df$previousClosePrice <- num_format(df$previousClosePrice)
+  df$todaysOpen <- num_format(df$todaysOpen)
+  df$highPrice <- num_format(df$highPrice)
+  df$lowPrice <- num_format(df$lowPrice)
+  df$volumeTraded <- num_format(df$volumeTraded)
+  df$turnOver <- num_format(df$turnOver)
+  df$noOfTrades <- num_format(df$noOfTrades)
 
   if (type == "company") {
     df$transactionDate <- strptime(df$transactionDate, format = "%Y-%m-%d")
-    df$lastTradePrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$lastTradePrice))
+    df$lastTradePrice <- num_format(df$lastTradePrice)
     df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
     df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
   }

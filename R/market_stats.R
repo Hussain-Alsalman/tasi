@@ -10,8 +10,8 @@ get_daily_market_stats <- function() {
 
 url <- constants$daily_report
 tbl <- rvest::read_html(url) %>%
-  rvest::html_element(css = "tr:nth-child(4) .Table3") %>%
-  rvest::html_table(header = TRUE)
+  rvest::html_element(css = "div.tableStyle:nth-child(2) > table:nth-child(1)") %>%
+  rvest::html_table(header = FALSE)
 cl_col_names <- tbl[1, ] %>%
   stringr::str_remove_all(pattern = "\\(SAR\\)") %>%
   janitor::make_clean_names()
