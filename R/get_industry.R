@@ -1,19 +1,5 @@
 # nolint start: line_length_linter, object_name_linter.
 
-#' List all available industries
-#'
-#' @return returns a character vector containing all industries names
-#' @details This function is to be used in conjunction with `industry_func(industry)` function.
-#' @export
-#'
-#' @examples
-#' get_banks <- industry_func(list_industries()[14])
-#' # now we have a function called get_banks()
-list_industries <- function() {
-  names(constants[8:28])
-}
-
-
 #' Industry Function Factory
 #'
 #' @param industry a character scaler with industry defined names. Can be obtained from `list_industries()`

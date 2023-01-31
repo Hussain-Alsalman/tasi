@@ -55,22 +55,20 @@ parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type
 #' @return string of values
 #'
 #'
-fin_parsURL <- function(comSymbol = NULL, statement_type, period) {
+fin_parsURL <- function(comSymbol = NULL, statement_type) {
   if (statement_type == "xbrl") {
     paste0(
       constants$fin_statement$url,
       constants$fin_statement$statement_type[statement_type],
-      constants$fin_statement$period[period], "&symbol=", comSymbol)
+      "&symbol=", comSymbol)
   } else {
   paste0(
+
     constants$fin_statement$url,
     constants$fin_statement$statement_type[statement_type],
-    constants$fin_statement$period[period], "&symbol=", comSymbol)
+    "&symbol=", comSymbol)
     }
 }
 
-profile_parse_url  <- function(com_symbol = NULL) {
-
-}
 # nolint end
 

@@ -10,13 +10,16 @@
 #'
 #' @import magrittr rvest
 #'
-get_fin_statement <- function(company_symbol, period_type = "q", statement) {
-  url <- fin_parsURL(company_symbol, statement, period_type)
+get_fin_statement <- function(company_symbol, period_type = "y", statement) {
+
+  url <- tasi:::fin_parsURL(company_symbol, statement)
   fin_df <- url %>%
     rvest::read_html() %>%
     rvest::html_table() %>%
-    .[[1]] %>%
-    .[-((nrow(.) - 3):nrow(.)), ]
+    .[[
+      ifelse(period_type == "q", 2, 1)
+    ]] %>%
+    .[-((nrow(.) - 2):nrow(.)), ]
 
   header <- colnames(fin_df)
   switch(period_type,
@@ -94,7 +97,7 @@ get_cash_flow <- function(company_symbol, period_type = "q") {
 #' @import magrittr rvest
 
 get_xbrl_table <- function(company_symbol) {
-  xbrl_page  <- fin_parsURL(company_symbol, statement_type = "xbrl", period = 0)
+  xbrl_page  <- tasi:::fin_parsURL(company_symbol, statement_type = "xbrl")
 
   page <- read_html(xbrl_page)
   links <- page %>%  html_elements("td")  %>%  .[-seq(1, to = 30, by = 6)] %>% html_element("a")
@@ -118,7 +121,6 @@ get_xbrl_table <- function(company_symbol) {
     cbind(df)
 
   header <- page %>%
-    html_element(".stock_table thead tr") %>%
     html_elements("th") %>%
     html_text()
 

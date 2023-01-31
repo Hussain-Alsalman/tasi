@@ -103,21 +103,23 @@ df_to_xts <- function(x) {
 #' @return formatted data frame
 #'
 format_df <- function(df, type = "index") {
-  df$transactionDate <- strptime(df$transactionDateStr, format = "%Y-%m-%d")
-  df$previousClosePrice <- as.numeric(df$previousClosePrice)
-  df$todaysOpen <- as.numeric(df$todaysOpen)
-  df$highPrice <- as.numeric(df$highPrice)
-  df$lowPrice <- as.numeric(df$lowPrice)
+
+  df$previousClosePrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$previousClosePrice))
+  df$todaysOpen <- as.numeric(gsub(pattern = ",", replacement = "", x = df$todaysOpen))
+  df$highPrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$highPrice))
+  df$lowPrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$lowPrice))
   df$volumeTraded <- as.numeric(gsub(pattern = ",", replacement = "", x = df$volumeTraded))
   df$turnOver <- as.numeric(gsub(pattern = ",", replacement = "", x = df$turnOver))
   df$noOfTrades <- as.numeric(gsub(pattern = ",", replacement = "", x = df$noOfTrades))
 
   if (type == "company") {
-    df$lastTradePrice <- as.numeric(df$lastTradePrice)
+    df$transactionDate <- strptime(df$transactionDate, format = "%Y-%m-%d")
+    df$lastTradePrice <- as.numeric(gsub(pattern = ",", replacement = "", x = df$lastTradePrice))
     df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
     df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
   }
   if (!"lastTradePrice" %in% colnames(df)) {
+    df$transactionDate <- strptime(df$transactionDate, format = "%Y/%m/%d")
     df <- df[,c(1,4:7,2:3,8:9)]
     }
     return(df[order(as.Date(df$transactionDate)), ] |> unique())
@@ -160,6 +162,20 @@ add_adj_price <- function(x, symbol, start_date, end_date) {
   return(x)
   }
 
+#' List all available industries
+#'
+#' @return returns a character vector containing all industries names
+#' @details This function is to be used in conjunction with `industry_func(industry)` function.
+#' @export
+#'
+#' @examples
+#' get_banks <- industry_func(list_industries()[14])
+#' # now we have a function called get_banks()
+list_industries <- function() {
+  first_inx <- which(names(constants) == "msci30")
+  last_inx <- which(names(constants) == "real_estate")
+  names(constants[first_inx:last_inx])
+}
 
 
 # nolint end
