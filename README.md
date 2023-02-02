@@ -30,12 +30,9 @@ library("tasi")
 library("ggplot2")
 library("magrittr")
 
-df <- get_index_records("2020-02-03","2021-01-02")
-#> Warning in min.default(structure(numeric(0), class = "Date"), na.rm = FALSE):
-#> no non-missing arguments to min; returning Inf
-#> Warning in max.default(structure(numeric(0), class = "Date"), na.rm = FALSE):
-#> no non-missing arguments to max; returning -Inf
-df %>%  ggplot(mapping = aes(x = as.POSIXct(transactionDate), y = previousClosePrice)) + geom_line()
+df <- get_index_records("2021-01-01","2022-12-31")
+df %>%  ggplot(mapping = aes(x = as.POSIXct(transactionDate), y = previousClosePrice)) + geom_line() + 
+  labs(title = "Historical data for tasi index 2021-2022", x = "Date", y = "TASI index") + theme_classic()
 ```
 
 <img src="man/figures/README-basic example-1.png" width="100%" />
@@ -69,7 +66,7 @@ library("dplyr")
 
 income_df <- get_income_statement(1180, period_type = "q") # q stands for quarterly.
 
-opts <-options(knitr.kable.NA = "-")
+opts <- options(knitr.kable.NA = "-")
 income_df %>% knitr::kable(format.args = list(big.mark = ",", scientific = FALSE))
 ```
 
