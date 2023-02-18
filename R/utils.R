@@ -174,5 +174,24 @@ list_industries <- function() {
   names(constants[first_inx:last_inx])
 }
 
+#' Get company info in a list
+#'
+#' @param comp_symbol  Company Symbol.
+#'
+#' @return list with named elements for including all company info including its industry peers.
+#' @export
+#'
+#' @examples
+#' comp_info(2010)
+comp_info <- function(comp_symbol) {
+
+  id <- as.character(comp_symbol)
+  info <- as.list(
+    stock_indices[which(stock_indices$companySymbol == id),]
+    )
+  info$peers <- stock_indices$companySymbol[which(stock_indices$sectorName == info$sectorName &
+                                                    stock_indices$companySymbol != id)]
+  return(info)
+}
 
 # nolint end
