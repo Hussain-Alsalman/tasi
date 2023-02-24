@@ -110,7 +110,7 @@ format_df <- function(df, type = "index") {
   df$noOfTrades <- num_format(df$noOfTrades)
 
   if (type == "company") {
-    df$transactionDate <- strptime(df$transactionDate, format = "%Y-%m-%d")
+    df$transactionDate <- strptime(df$transactionDate, format = "%b %e, %Y")
     df$lastTradePrice <- num_format(df$lastTradePrice)
     df$change <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$change))
     df$changePercent <- as.numeric(gsub(pattern = "<.*?>",replacement = "", x = df$changePercent))
@@ -133,13 +133,20 @@ format_df <- function(df, type = "index") {
 #'
 #' @import magrittr
 add_adj_price <- function(x, symbol, start_date, end_date) {
+  str_s <- date_elements(start_date)
+  str_e <- date_elements(end_date)
+
+  start_date <- paste(str_s$D,"-",str_s$M,"-", str_s$Y, sep = "")
+  end_date <- paste(str_e$D,"-",str_e$M,"-", str_e$Y, sep = "")
   req <-  httr::POST(paste0(constants$dividends_base_url,constants$dividends_unique_key,constants$dividens), body = list(
    symbolorcompany = symbol,
    start = start_date,
    end = end_date,
    marketsListId = "M",
    sector = "",
-   period = "CUSTOM"
+   period = "CUSTOM",
+   bySymbol = symbol,
+   market = ""
    ),
   encode = "form")
   df <- httr::content(req,type = "application/json")

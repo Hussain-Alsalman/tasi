@@ -30,10 +30,12 @@ parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type
     prams$entity <- paste("M:",constants[type], sep = "")
   }
     return(
+
       paste(constants$records_base_url,
             constants$records_unique_key,
             constants$records,
-            "?selectedMarket=",prams$market,
+            "&start=", startIndex,
+            "&selectedMarket=",prams$market,
             "&selectedSector=",prams$sector,
             "&selectedEntity=",prams$entity,
             "&startDate=",startDate,
@@ -63,8 +65,7 @@ fin_parsURL <- function(comSymbol = NULL, statement_type) {
       "&symbol=", comSymbol)
   } else {
   paste0(
-
-    constants$fin_statement$url,
+    constants$fin_statement$url,"?",
     constants$fin_statement$statement_type[statement_type],
     "&symbol=", comSymbol)
     }
