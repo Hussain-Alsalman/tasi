@@ -14,7 +14,7 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
 
   period <- difftime(as.Date(endDate, tryFormats = c("%m/%d/%Y")),as.Date(startDate, tryFormats = c("%m/%d/%Y")), units = "days")
   period = as.integer(period)
-  inx <- seq(from = 1, to = period, by = 25)
+  inx <- seq(from = 1, to = period, by = 100)
   fullData <- data.frame(stringsAsFactors = FALSE)
   if (length(inx) <= 2) {
     jsonData <- rjson::fromJSON(
@@ -27,7 +27,7 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
         type = type,
         adjusted = adjustPeriod)
       )
-    p.table <- t(sapply(rjson::fromJSON(jsonData$performanceBean), function(x) unlist(x)))
+    p.table <- t(sapply(jsonData$data, function(x) unlist(x)))
     fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
     } else {
       pb <- progress::progress_bar$new(total = length(inx) - 1, format = "Extracting Data [:bar] :percent : eta: [:eta]")
@@ -42,7 +42,7 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
               type = type,
               adjusted = adjustPeriod)
           )
-          p.table <- t(sapply(rjson::fromJSON(jsonData$performanceBean), function(x) unlist(x)))
+          p.table <- t(sapply(jsonData$data, function(x) unlist(x)))
           fullData <- rbind(fullData, as.data.frame(p.table, stringsAsFactors = FALSE))
           pb$tick()
         }

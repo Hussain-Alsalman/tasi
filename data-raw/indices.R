@@ -15,13 +15,19 @@ colnames(df) <- col_names
 # Populate Data Frame with Data
 for (i in seq_along(col_names)) {
   df[col_names[i]] <- sapply(all_symbols, function(el) {
-    ifelse(!is.null(unlist(el[col_names[i]])), unlist(el[col_names[i]]), NA)})
+    ifelse(!is.null(unlist(el[col_names[i]])), unlist(el[col_names[i]]), NA)
+    })
 }
 
 # Obtain supplemental information for each company
-df_supplement <- rjson::fromJSON(file = "https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziTR3NDIw8LAz8LVxcnA0C3bwtPLwM_I0MzMz1w1EVGAQHmAIVBPga-xgEGbgbmOlHEaPfAAdwNCCsPwpNia-7mUGgn2Ogv5G5qYFBsBG6AixOBCvA44bg1Dz9gtzQCIPMgHQAsqCDtA!!/p0/IZ7_5A602H80OOMQC0604RU6VD10H0=CZ6_5A602H80O8DDC0QFK8HJ0O2067=NJgetMainNomucMarketDetails=/",simplify = FALSE)
+base_url <- "https://www.saudiexchange.sa/wps/portal/saudiexchange/ourmarkets/main-market-watch"
+res  <- httr::GET(base_url)
+inx <- gregexpr(pattern = '(?<=z1/).*(?=\\/dz)', text = res$headers$`content-location`, perl = TRUE)
+unique_uri <- as.character(regmatches(res$headers$`content-location`, inx))
+
+df_supplement <- rjson::fromJSON(file = paste(base_url, "/!ut/p/z1/", unique_uri, "/p0/IZ7_IPG41I82KGASC06S67RB9A0080=CZ6_5A602H80O8DDC0QFK8HJ0O2067=NJgetMainNomucMarketDetails=/?sectorParameter=&tableViewParameter=1&iswatchListSelected=NO&requestLocale=en&_=1677051138477", sep = ""), simplify = FALSE)
 col_names <- names(df_supplement$data[[1]])
-df_supplement <- purrr::map_dfr(df_supplement$data,magrittr::extract, col_names)
+df_supplement <- purrr::map_dfr(df_supplement$data, magrittr::extract, col_names)
 
 # Split Data into Different Subsets
 stock_indices_partial <- df %>%
@@ -42,4 +48,3 @@ stock_indices <- df_supplement %>%
 #write in the Stock market Data
 usethis::use_data(stock_indices, bonds_indices, overwrite = TRUE)
 # nolint end
-

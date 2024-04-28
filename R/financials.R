@@ -12,7 +12,7 @@
 #'
 get_fin_statement <- function(company_symbol, period_type = "y", statement) {
 
-  url <- tasi:::fin_parsURL(company_symbol, statement)
+  url <- fin_parsURL(company_symbol, statement)
   fin_df <- url %>%
     rvest::read_html() %>%
     rvest::html_table() %>%

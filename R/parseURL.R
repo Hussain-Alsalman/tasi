@@ -30,10 +30,12 @@ parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type
     prams$entity <- paste("M:",constants[type], sep = "")
   }
     return(
+
       paste(constants$records_base_url,
             constants$records_unique_key,
             constants$records,
-            "?selectedMarket=",prams$market,
+            "&start=", startIndex,
+            "&selectedMarket=",prams$market,
             "&selectedSector=",prams$sector,
             "&selectedEntity=",prams$entity,
             "&startDate=",startDate,
@@ -56,18 +58,20 @@ parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type
 #'
 #'
 fin_parsURL <- function(comSymbol = NULL, statement_type) {
-  if (statement_type == "xbrl") {
-    paste0(
-      constants$fin_statement$url,
-      constants$fin_statement$statement_type[statement_type],
-      "&symbol=", comSymbol)
-  } else {
-  paste0(
 
-    constants$fin_statement$url,
-    constants$fin_statement$statement_type[statement_type],
-    "&symbol=", comSymbol)
-    }
+    parsed_url <- httr::parse_url(
+      paste0(
+      constants$fin_base_url,
+      constants$fin_unique_key,
+      constants$fin_statement$url)
+      )
+    parsed_url$query <- list(
+      "statementType" = paste0(constants$fin_statement$statement_type[statement_type]),
+      "companySymbol" = comSymbol,
+      "requestLocale" = "en"
+    )
+    httr::build_url(parsed_url)
+
 }
 
 # nolint end
