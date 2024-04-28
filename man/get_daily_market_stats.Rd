@@ -14,5 +14,4 @@ Getting daily market daily report
 }
 \examples{
 get_daily_market_stats()
-
 }

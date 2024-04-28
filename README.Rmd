@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r option_settings, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -32,12 +32,15 @@ devtools::install_github("Hussain-Alsalman/tasi")
 
 This is a basic example which shows you how to obtain and plot  TASI historical performance for the past year:
 
-```{r basic example}
+```{r basic example, warning=FALSE}
+
 library("tasi")
+library("ggplot2")
+library("magrittr")
 
-df <- get_index_records("2020-01-01","2021-01-30")
-
-plot(df$date, df$close,xlab = "Date", ylab = "TASI points",type = "l")
+df <- get_index_records("2021-01-01","2022-12-31")
+df %>%  ggplot(mapping = aes(x = as.POSIXct(transactionDate), y = previousClosePrice)) + geom_line() + 
+  labs(title = "Historical data for tasi index 2021-2022", x = "Date", y = "TASI index") + theme_classic()
 
 ```
 
@@ -66,7 +69,7 @@ library("dplyr")
 
 income_df <- get_income_statement(1180, period_type = "q") # q stands for quarterly.
 
-opts <-options(knitr.kable.NA = "-")
+opts <- options(knitr.kable.NA = "-")
 income_df %>% knitr::kable(format.args = list(big.mark = ",", scientific = FALSE))
 options(opts)
 ```

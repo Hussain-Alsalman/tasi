@@ -13,11 +13,11 @@ request_data(
 )
 }
 \arguments{
+\item{startDate}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+
+\item{endDate}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+
 \item{adjustPeriod}{This is logical term. If TRUE prices based on prior to adjustment.}
-
-\item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
-
-\item{end_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 }
 \value{
 : data frame of the TASI index

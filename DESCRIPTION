@@ -1,6 +1,6 @@
 Package: tasi
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: The Missing API for Saudi Stock Market 
+Version: 2.1.0.0000
 Authors@R: 
     person(given = "Hussain",
            family = "Alsalman",
@@ -19,6 +19,14 @@ Imports:
     magrittr,
     rvest,
     tibble,
+    TTR,
+    assertthat,
+    janitor,
+    lubridate,
+    quantmod,
+    snakecase,
+    stringr,
+    tidyr,
     httr, 
     progress,
     assertthat

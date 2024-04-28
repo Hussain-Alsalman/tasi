@@ -84,14 +84,11 @@ df_to_xts <- function(x) {
        "lowPrice",
        ifelse(!"lastTradePrice" %in% colnames(x), "previousClosePrice", "lastTradePrice"),
        "volumeTraded")]
-
-   colnames(x)  <- c("Date","Open", "High", "Low","Close", "Volume")
-
-    x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
-    x <- xts::convertIndex(x = x, value = "POSIXct")
-    return(x)
-
-}
+  colnames(x)  <- c("Date","Open", "High", "Low","Close", "Volume")
+  x <- xts::as.xts(x = x[, c("High", "Open", "Low", "Close", "Volume")], order.by = x$Date)
+  x <- xts::convertIndex(x = x, value = "POSIXct")
+  return(x)
+  }
 
 #' Title
 #'
@@ -164,7 +161,7 @@ add_adj_price <- function(x, symbol, start_date, end_date) {
     x$Adjusted <- x$Close
   }
   return(x)
-  }
+}
 
 #' List all available industries
 #'

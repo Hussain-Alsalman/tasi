@@ -41,9 +41,9 @@ constants <- list(
       "income_statement" = "1",
       "cash_flow" = "2",
       "xbrl" = "4"
-      )
     )
   )
+)
 
 usethis::use_data(constants, overwrite = TRUE, internal = TRUE)
 # nolint end

@@ -81,8 +81,8 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
       add_column(.before = 1, symbol = rep(as.character(symbol), nrow(.))) %>%
       mutate(Date = lubridate::as_date(Date))
 
-    aggregate_tbl <- aggregate_tbl %>%
-      bind_rows(tbl)
+      aggregate_tbl <- aggregate_tbl %>%
+        bind_rows(tbl)
     }
     return(aggregate_tbl)
   }
