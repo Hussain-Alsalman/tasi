@@ -58,17 +58,20 @@ parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type
 #'
 #'
 fin_parsURL <- function(comSymbol = NULL, statement_type) {
-  if (statement_type == "xbrl") {
-    paste0(
-      constants$fin_statement$url,
-      constants$fin_statement$statement_type[statement_type],
-      "&symbol=", comSymbol)
-  } else {
-  paste0(
-    constants$fin_statement$url,"?",
-    constants$fin_statement$statement_type[statement_type],
-    "&symbol=", comSymbol)
-    }
+
+    parsed_url <- httr::parse_url(
+      paste0(
+      constants$fin_base_url,
+      constants$fin_unique_key,
+      constants$fin_statement$url)
+      )
+    parsed_url$query <- list(
+      "statementType" = paste0(constants$fin_statement$statement_type[statement_type]),
+      "companySymbol" = comSymbol,
+      "requestLocale" = "en"
+    )
+    httr::build_url(parsed_url)
+
 }
 
 # nolint end

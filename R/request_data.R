@@ -14,7 +14,7 @@ request_data <- function(startDate, endDate, type, company_symbol = NULL, adjust
 
   period <- difftime(as.Date(endDate, tryFormats = c("%m/%d/%Y")),as.Date(startDate, tryFormats = c("%m/%d/%Y")), units = "days")
   period = as.integer(period)
-  inx <- seq(from = 1, to = period, by = 25)
+  inx <- seq(from = 1, to = period, by = 100)
   fullData <- data.frame(stringsAsFactors = FALSE)
   if (length(inx) <= 2) {
     jsonData <- rjson::fromJSON(

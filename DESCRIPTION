@@ -6,7 +6,7 @@ Authors@R:
            family = "Alsalman",
            role = c("aut", "cre"),
            email = "ArabianAnalyst@gmail.com")
-Description: What the package does (one paragraph).
+Description: This package to provide the missing API for Saudi Stock Market. It fetch historical equity prices and TASI (Tadawul All Share Index) as well as provides easy access to the released financial statements
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

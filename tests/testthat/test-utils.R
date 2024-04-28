@@ -25,9 +25,9 @@ test_that("Input Validation Works", {
   date_error_msg <- "Date provided is in incorrect format. Please provide date in 'yyyy-mm-dd' format. for example '2020-02-01', '2021-12-23'"
   company_error_msg <- "Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010"
 
-  expect_error(object = validate_input(correct_start_date, incorrect_end_date, incorrect_company_symbol), regexp = date_error_msg )
+  expect_error(object = validate_input(correct_start_date, incorrect_end_date, incorrect_company_symbol), regexp = date_error_msg)
   expect_error(object = validate_input(correct_start_date, correct_end_date, incorrect_company_symbol), regexp = company_error_msg)
-  expect_error(object = validate_input(incorrect_start_date, correct_end_date, correct_company_symbol), regexp = string_error_msg )
+  expect_error(object = validate_input(incorrect_start_date, correct_end_date, correct_company_symbol), regexp = string_error_msg)
 })
 
 
@@ -40,4 +40,3 @@ test_that("Number Formatting Works", {
   expect_equal(num_format(num_2), 32436)
   expect_equal(num_format(num_3), -32452)
 })
-
