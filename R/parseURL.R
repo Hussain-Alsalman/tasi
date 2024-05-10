@@ -67,6 +67,7 @@ fin_parsURL <- function(comSymbol = NULL, statement_type) {
     parsed_url$query <- list(
       "statementType" = paste0(constants$fin_statement$statement_type[statement_type]),
       "companySymbol" = comSymbol,
+      "reportType" = 0,
       "requestLocale" = "en"
     )
     httr::build_url(parsed_url)
