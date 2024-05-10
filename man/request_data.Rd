@@ -17,6 +17,10 @@ request_data(
 
 \item{endDate}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
+\item{type}{this can only be "index" or "company" it determines how the data will be retrieved}
+
+\item{company_symbol}{Company Symbol number}
+
 \item{adjustPeriod}{This is logical term. If TRUE prices based on prior to adjustment.}
 }
 \value{

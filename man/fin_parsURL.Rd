@@ -11,8 +11,6 @@ fin_parsURL(comSymbol = NULL, statement_type)
 \item{comSymbol}{Company Symbol number}
 
 \item{statement_type}{Type of Financial Statement. This can be one of these choices "balance_sheet", "income_statement", "cash_flow", "xbrl"}
-
-\item{period}{Type of period. This can be either "yearly" or "quarterly"}
 }
 \value{
 string of values

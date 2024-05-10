@@ -69,7 +69,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
 #' ## End(Not run)
 #'
 #'
-getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE) {
+getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE, auto_assign = TRUE) {
 
   if (tidy) {
     aggregate_tbl <- NULL
@@ -86,7 +86,9 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
     }
     return(aggregate_tbl)
   }
-
+  if (!auto_assign) {
+    df_xts <- xts::xts()
+  }
   for (symbol in symbol_vector) {
     df <- get_company_records(start_date, end_date, symbol, use_cache = TRUE)
     df <- add_adj_price(df, symbol = symbol, start_date, end_date)
@@ -94,7 +96,14 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
     new_colnames <- paste0("T", symbol, ".", df_colnames)
     colnames(df) <- new_colnames
     df <- xts::convertIndex(x = df, value = "POSIXct")
-    assign(paste0("T", symbol), df, envir = parent.frame())
+    if (auto_assign) {
+      assign(paste0("T", symbol), df, envir = parent.frame())
+    } else {
+      df_xts <- merge(df_xts, df)
+    }
+  }
+  if (!auto_assign) {
+    return(df_xts)
   }
 }
 

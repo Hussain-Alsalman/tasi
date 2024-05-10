@@ -4,7 +4,14 @@
 \alias{getSymbols}
 \title{Historical Data of a group of companies for specific period.}
 \usage{
-getSymbols(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE)
+getSymbols(
+  start_date,
+  end_date,
+  symbol_vector,
+  tidy = FALSE,
+  use_cache = TRUE,
+  auto_assign = TRUE
+)
 }
 \arguments{
 \item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}

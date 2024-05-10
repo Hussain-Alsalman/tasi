@@ -10,6 +10,8 @@ check_cached_index(start_date, end_date, index_type)
 \item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 
 \item{end_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+
+\item{index_type}{this can only be "index" or "company" it determines how and where the cached data is stored.}
 }
 \value{
 It returns a list that will include a cached data frame if exists

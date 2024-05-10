@@ -59,8 +59,6 @@ date_elements <- function(date_str) {
 #'
 #' @return clean numeric value
 #'
-#' @examples
-#' tasi:::num_format("200,000")
 #'
 num_format <- function(num) {
     as.numeric(gsub(pattern = ",", replacement = "", x = num))
@@ -123,10 +121,10 @@ format_df <- function(df, type = "index") {
 #'
 #' @param x xts object (data frames will be converted to xts)
 #' @param symbol the symbol of the company
-#'
+#' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
+#' @param end_date The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @return xts object with adjusted prices
 #' @export
-#'
 #'
 #' @import magrittr
 add_adj_price <- function(x, symbol, start_date, end_date) {

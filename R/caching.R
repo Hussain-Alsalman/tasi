@@ -1,5 +1,5 @@
 # nolint start: line_length_linter, object_name_linter.
-#' Cetting Cached historical data for companies
+#' Checking Cached historical data for companies
 #'
 #' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param end_date  The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
@@ -7,8 +7,7 @@
 #'
 #' @return
 #' It returns a list that will include a cached data frame if exists
-#'
-#'
+
 check_cached_company <- function(start_date, end_date, symbol) {
   dir_path <- system.file("company_symbols", package = "tasi")
   if (file.exists(file.path(dir_path, paste0(as.character(symbol), ".rds")))) {
@@ -46,8 +45,6 @@ check_cached_company <- function(start_date, end_date, symbol) {
   }
 }
 
-
-
 #' Cashing the extracted data from the internet
 #'
 #' @param df extracted data
@@ -63,7 +60,7 @@ cach_me_com <- function(df, symbol) {
 #'
 #' @param start_date The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param end_date  The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
-#'
+#' @param index_type this can only be "index" or "company" it determines how and where the cached data is stored.
 #' @return It returns a list that will include a cached data frame if exists
 #'
 check_cached_index <- function(start_date, end_date, index_type) {
@@ -108,7 +105,8 @@ check_cached_index <- function(start_date, end_date, index_type) {
 #' Cashing the extracted data from the internet
 #'
 #' @param df extracted data
-#'
+#' @param index_type this can only be "index" or "company" it determines how and where the cached data is stored.
+
 cach_me_index <- function(df, index_type) {
   dir_path <- system.file("index_records", package = "tasi")
   saveRDS(df, file.path(dir_path, paste0(index_type, ".rds")))

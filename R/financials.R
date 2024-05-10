@@ -3,7 +3,6 @@
 #'
 #' @param company_symbol  Company Symbol number
 #' @param period_type financial statement reporting period type which is either "q" for quarterly or "y" for annually
-
 #' @param statement Financial Statement name which can be one of the three : "income_statement", "balance_sheet" or "cash_flow"
 #'
 #' @return formatted financial statement as tibble data frame.
@@ -97,7 +96,7 @@ get_cash_flow <- function(company_symbol, period_type = "q") {
 #' @import magrittr rvest
 
 get_xbrl_table <- function(company_symbol) {
-  xbrl_page  <- tasi:::fin_parsURL(company_symbol, statement_type = "xbrl")
+  xbrl_page  <- fin_parsURL(company_symbol, statement_type = "xbrl")
 
   page <- read_html(xbrl_page)
   links <- page %>%  html_elements("td")  %>%  .[-seq(1, to = 30, by = 6)] %>% html_element("a")
@@ -134,12 +133,9 @@ get_xbrl_table <- function(company_symbol) {
   return(results)
 }
 
-
-
-
 #' Get available XBRL statements
 #'
-#' @param xbrl_statement xbrl_table produced by the \link[tasi]{get_xbrl_table()}
+#' @param xbrl_statement xbrl_table produced by the \code{\link[tasi]{get_xbrl_table()}}
 #' @param period financial statement period which takes a form of (Qx or Annual)-Year. e.g "Q1-2021" or "Annual-2021"
 #'
 #' @return character vector of all available xbrl statements
@@ -163,7 +159,7 @@ get_available_xbrl_statements <- function(xbrl_statement, period) {
 #'
 #' @param company_symbol Company Symbol number
 #' @param period financial statement period which takes a form of (Qx or Annual)-Year. e.g "Q1-2021" or "Annual-2021"
-#' @param statement_type specific string that match XBRL specifications for financial statements. This can be obtained by \link[tasi]{get_available_xbrl_statements()}. Defaults to NULL.
+#' @param statement_type specific string that match XBRL specifications for financial statements. This can be obtained by \code{\link[tasi]{get_available_xbrl_statements()}}. Defaults to NULL.
 #'
 #' @return Data Frame of type tibble of specified XBRL Financial Statement
 #' @export

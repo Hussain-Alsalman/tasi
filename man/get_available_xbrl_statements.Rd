@@ -7,7 +7,7 @@
 get_available_xbrl_statements(xbrl_statement, period)
 }
 \arguments{
-\item{xbrl_statement}{xbrl_table produced by the \link[tasi]{get_xbrl_table()}}
+\item{xbrl_statement}{xbrl_table produced by the \code{\link[tasi]{get_xbrl_table()}}}
 
 \item{period}{financial statement period which takes a form of (Qx or Annual)-Year. e.g "Q1-2021" or "Annual-2021"}
 }
