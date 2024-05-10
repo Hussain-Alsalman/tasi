@@ -52,7 +52,6 @@ parseURL <- function(startDate, endDate, comp_symbol, startIndex, endIndex, type
 #'
 #' @param comSymbol Company Symbol number
 #' @param statement_type Type of Financial Statement. This can be one of these choices "balance_sheet", "income_statement", "cash_flow", "xbrl"
-#' @param period Type of period. This can be either "yearly" or "quarterly"
 #'
 #' @return string of values
 #'

@@ -8,6 +8,8 @@ cach_me_index(df, index_type)
 }
 \arguments{
 \item{df}{extracted data}
+
+\item{index_type}{this can only be "index" or "company" it determines how and where the cached data is stored.}
 }
 \description{
 Cashing the extracted data from the internet

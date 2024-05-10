@@ -3,6 +3,8 @@
 #'
 #' @param startDate The start date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param endDate The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
+#' @param company_symbol Company Symbol number
+#' @param type this can only be "index" or "company" it determines how the data will be retrieved
 #' @param adjustPeriod This is logical term. If TRUE prices based on prior to adjustment.
 #'
 #' @return : data frame of the TASI index

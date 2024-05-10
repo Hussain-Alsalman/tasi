@@ -15,7 +15,3 @@ clean numeric value
 \description{
 Converting strings to cleaned up numeric values
 }
-\examples{
-tasi:::num_format("200,000")
-
-}

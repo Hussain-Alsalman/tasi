@@ -18,7 +18,7 @@ cl_col_names <- tbl[1, ] %>%
 
 colnames(tbl) <- cl_col_names
 tbl <- tbl[-1, ]
-tbl[,2:ncol(tbl)] <- apply(tbl[,-1], c(1,2), tasi:::num_format)
+tbl[,2:ncol(tbl)] <- apply(tbl[,-1], c(1,2), num_format)
 tbl <- tbl %>%
   dplyr::left_join(tasi::stock_indices, by = c("company" = "tradingNameEn"))
 return(tbl)

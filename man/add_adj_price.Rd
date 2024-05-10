@@ -10,6 +10,10 @@ add_adj_price(x, symbol, start_date, end_date)
 \item{x}{xts object (data frames will be converted to xts)}
 
 \item{symbol}{the symbol of the company}
+
+\item{start_date}{The start date of the query. Date is a string that needs to be in yyyy-mm-dd format}
+
+\item{end_date}{The end date of the query. Date is a string that needs to be in yyyy-mm-dd format}
 }
 \value{
 xts object with adjusted prices

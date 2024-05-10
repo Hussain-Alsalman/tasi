@@ -2,7 +2,7 @@
 % Please edit documentation in R/caching.R
 \name{check_cached_company}
 \alias{check_cached_company}
-\title{Cetting Cached historical data for companies}
+\title{Checking Cached historical data for companies}
 \usage{
 check_cached_company(start_date, end_date, symbol)
 }
@@ -17,5 +17,5 @@ check_cached_company(start_date, end_date, symbol)
 It returns a list that will include a cached data frame if exists
 }
 \description{
-Cetting Cached historical data for companies
+Checking Cached historical data for companies
 }
