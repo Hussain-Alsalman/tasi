@@ -7,7 +7,6 @@
 #' @examples
 #' get_daily_market_stats()
 get_daily_market_stats <- function() {
-
 url <- constants$daily_report
 tbl <- rvest::read_html(url) %>%
   rvest::html_element(css = "div.tableStyle:nth-child(2) > table:nth-child(1)") %>%
@@ -18,7 +17,7 @@ cl_col_names <- tbl[1, ] %>%
 
 colnames(tbl) <- cl_col_names
 tbl <- tbl[-1, ]
-tbl[,2:ncol(tbl)] <- apply(tbl[,-1], c(1,2), num_format)
+tbl[,2:ncol(tbl)] <- apply(tbl[,-1], c(1,2), function(x) gsub("%", "", x)) %>% apply(c(1,2), num_format)
 tbl <- tbl %>%
   dplyr::left_join(tasi::stock_indices, by = c("company" = "tradingNameEn"))
 return(tbl)
