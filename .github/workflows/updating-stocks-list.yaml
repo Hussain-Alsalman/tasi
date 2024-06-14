@@ -1,0 +1,50 @@
+# This workflow is designed to update the list of the stocks list.
+# This is necessary because new companies get IPO'ed from time to time
+
+name: update-stock-list
+
+# This job scheduled to be run everyday on 3:00AM
+on:
+  schedule:
+    -  cron: '00 3 */1 * *'
+  workflow_dispatch:
+
+jobs:
+  update-stock-list:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install libcurl on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -y && sudo apt-get install -y libcurl4-openssl-dev
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: 2
+          packages: |
+            any::usethis
+            any::dplyr
+            any::readr
+            any::rjson
+            any::httr
+            any::purrr
+            any::magrittr
+
+      - name: running-the-data-raw-files
+        run: |
+          source("data-raw/constants.R")
+          source("data-raw/indices.R")
+        shell: Rscript {0}
+      
+      - name: Commit files
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -am "Updating Stocks list as of `date`"
+          git push
