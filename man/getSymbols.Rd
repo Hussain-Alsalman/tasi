@@ -23,6 +23,8 @@ getSymbols(
 \item{tidy}{logical operator to return aggregated tibble}
 
 \item{use_cache}{logical operator for using cached data}
+
+\item{auto_assign}{logical operator to specify if results should be assigned to the parent enviornment or returned}
 }
 \value{
 returns a data frame of company historical stock performance

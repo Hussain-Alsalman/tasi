@@ -35,7 +35,7 @@ df %>%  ggplot(mapping = aes(x = as.POSIXct(transactionDate), y = previousCloseP
   labs(title = "Historical data for tasi index 2021-2022", x = "Date", y = "TASI index") + theme_classic()
 ```
 
-<img src="man/figures/README-basic example-1.png" width="100%" />
+<img src="man/figures/README-basic-example-1.png" width="100%" />
 
 This is more sophisticated example using `quantmod` package to create
 candlesticks chart
@@ -52,7 +52,7 @@ comp_df %>%
   chart_Series()
 ```
 
-<img src="man/figures/README-sophisticated example-1.png" width="100%" />
+<img src="man/figures/README-sophisticated-example-1.png" width="100%" />
 
 ## Extracting Financial Statements
 
@@ -70,25 +70,31 @@ opts <- options(knitr.kable.NA = "-")
 income_df %>% knitr::kable(format.args = list(big.mark = ",", scientific = FALSE))
 ```
 
-| statement_of_income          |      Q3_2022 |      Q2_2022 |      Q1_2022 |      Q3_2021 |
-|:-----------------------------|-------------:|-------------:|-------------:|-------------:|
-| Sales                        |  176,497,000 |  172,065,000 |  172,377,000 |  191,011,000 |
-| Sales Cost                   |   78,596,000 |   93,809,000 |   86,843,000 |   95,270,000 |
-| Total Income                 |   97,901,000 |   78,256,000 |   85,534,000 |   95,741,000 |
-| Other Revenues               |   41,398,000 |    1,404,000 |      540,000 |   33,904,000 |
-| Total Revenues               |  139,299,000 |   79,660,000 |   86,074,000 |  129,645,000 |
-| Admin and Marketing Expenses |   41,067,000 |   46,436,000 |   46,059,000 |   52,471,000 |
-| Depreciation                 |   50,869,000 |   54,077,000 |   57,439,000 |   57,270,000 |
-| Other Expenses               |   35,248,000 |   14,121,000 |   13,942,000 |   16,018,000 |
-| Total Expenses               |  127,184,000 |  114,634,000 |  117,440,000 |  125,759,000 |
-| Net Income Before Zakat      |   12,115,000 |  -34,974,000 |  -31,366,000 |    3,886,000 |
-| Zakat                        |           \- |           \- |           \- |   -2,296,000 |
-| Net Income                   |   12,115,000 |  -34,974,000 |  -31,366,000 |    6,182,000 |
-| Balance First Period         | -338,631,000 | -303,657,000 | -272,291,000 | -432,388,000 |
-| Reserves                     |           \- |           \- |           \- |           \- |
-| Cash Dividends               |           \- |           \- |           \- |           \- |
-| Other Distributions          |           \- |           \- |           \- | -201,618,000 |
-| Balance End Period           | -326,516,000 | -338,631,000 | -303,657,000 | -224,588,000 |
+| statement_of_income                |        Q2_2023 |        Q1_2023 |       Q3_2022 |       Q2_2022 |
+|:-----------------------------------|---------------:|---------------:|--------------:|--------------:|
+| Special Commission Income          | 11,929,734,000 | 11,117,402,000 | 8,932,721,000 | 8,226,596,000 |
+| Special Commission Expenses        |  5,405,535,000 |  4,339,496,000 | 2,377,611,000 | 1,420,695,000 |
+| Net Special Commission Income      |  6,524,199,000 |  6,777,906,000 | 6,555,110,000 | 6,805,901,000 |
+| Fees from Services                 |  1,078,148,000 |  1,036,568,000 |   862,503,000 |   983,407,000 |
+| Exchange Income                    |    525,811,000 |    492,920,000 |   487,510,000 |   333,733,000 |
+| Trading Income                     |    574,632,000 |    528,535,000 |   632,025,000 |   387,324,000 |
+| Realized Gains on Investments, net |    105,826,000 |    231,348,000 |   159,874,000 |   143,703,000 |
+| Dividend Income                    |             \- |             \- |            \- |            \- |
+| Other Operating Income             |   -311,685,000 |   -336,252,000 |  -249,199,000 |  -280,792,000 |
+| Total Operating Income             |  8,496,931,000 |  8,731,025,000 | 8,447,823,000 | 8,373,276,000 |
+| Salaries and Employees Benefits    |  1,156,716,000 |  1,164,454,000 | 1,105,160,000 | 1,139,163,000 |
+| Rent and Premises                  |    133,534,000 |    132,881,000 |   138,946,000 |   134,685,000 |
+| Depreciation                       |    540,508,000 |    550,637,000 |   560,506,000 |   587,139,000 |
+| Other General and Admin Expenses   |  1,574,530,000 |  1,368,735,000 | 1,378,107,000 | 1,329,671,000 |
+| Provision for Credit Losses        |     76,083,000 |    492,778,000 |   540,545,000 |   593,496,000 |
+| Total Operating Expenses           |  3,481,371,000 |  3,709,485,000 | 3,723,264,000 | 3,784,154,000 |
+| Extraordinary item                 |             \- |             \- |            \- |            \- |
+| Net Income from Operations         |  5,015,560,000 |  5,021,540,000 | 4,724,559,000 | 4,589,122,000 |
+| Balance at Beginning of Period     |             \- |             \- |            \- |            \- |
+| Transferred to Reserves            |             \- |             \- |            \- |            \- |
+| Cash Dividend                      |             \- |             \- |            \- |            \- |
+| Other Distributions                |             \- |             \- |            \- |            \- |
+| Balance at End of Period           |             \- |             \- |            \- |            \- |
 
 ``` r
 options(opts)

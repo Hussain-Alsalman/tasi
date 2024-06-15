@@ -21,3 +21,12 @@ xts object with adjusted prices
 \description{
 Add adjusted prices to dividens to an xts object
 }
+\examples{
+start_d <- "2022-01-01"
+end_d <- "2023-01-01"
+symbol <- 2222
+get_company_records(start_date = start_d, end_date = end_d, company_symbol = symbol) |>
+df_to_xts() |>
+add_adj_price(symbol = symbol, start_date = start_d, end_date = end_d)
+
+}

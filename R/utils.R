@@ -68,8 +68,7 @@ num_format <- function(num) {
 #'
 #' @param x Data Frame to be converted to xts object
 #'
-#' @return
-#' returns an xts object
+#' @return returns an xts object
 #' @export
 #'
 #' @examples
@@ -127,6 +126,14 @@ format_df <- function(df, type = "index") {
 #' @export
 #'
 #' @import magrittr
+#' @examples
+#' start_d <- "2022-01-01"
+#' end_d <- "2023-01-01"
+#' symbol <- 2222
+#' get_company_records(start_date = start_d, end_date = end_d, company_symbol = symbol) |>
+#' df_to_xts() |>
+#' add_adj_price(symbol = symbol, start_date = start_d, end_date = end_d)
+#'
 add_adj_price <- function(x, symbol, start_date, end_date) {
   str_s <- date_elements(start_date)
   str_e <- date_elements(end_date)

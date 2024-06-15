@@ -9,7 +9,7 @@ A data frame with 212 rows and 8 variables:
 \describe{
 \item{symbol}{bond Symbol aka:Ticker e.g.("2315", "4035" ..etc)}
 \item{companyNameEN}{Full bond name in English e.g.("Sadara Sukuk", "Bahri Sukuk")}
-\item{companyNameAR}{Full bond name in Arabic e.g.("صكوك ساتورب" ,"صكوك كهرباء السعودية 3")}
+\item{companyNameAR}{Full bond name in Arabic}
 \item{companyName}{Bond name in English e.g.("Sadara Sukuk" "Bahri Sukuk")}
 \item{market_type}{Market type to differentiate it from Stock Market}
 \item{isin}{System code, usually not used}

@@ -32,7 +32,7 @@ devtools::install_github("Hussain-Alsalman/tasi")
 
 This is a basic example which shows you how to obtain and plot  TASI historical performance for the past year:
 
-```{r basic example, warning=FALSE}
+```{r basic-example, warning=FALSE}
 
 library("tasi")
 library("ggplot2")
@@ -46,7 +46,7 @@ df %>%  ggplot(mapping = aes(x = as.POSIXct(transactionDate), y = previousCloseP
 
 This is more sophisticated example using `quantmod` package to create candlesticks chart
 
-```{r sophisticated example,message=FALSE}
+```{r sophisticated-example,message=FALSE}
 library("quantmod")
 library("dplyr")
 library("xts")

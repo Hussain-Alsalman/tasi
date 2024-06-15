@@ -15,3 +15,6 @@ Data Frame that includes all links
 \description{
 Getting XBRL financial statement links
 }
+\examples{
+get_xbrl_table(2222)
+}

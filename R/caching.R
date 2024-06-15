@@ -5,8 +5,7 @@
 #' @param end_date  The end date of the query. Date is a string that needs to be in yyyy-mm-dd format
 #' @param symbol Company Symbol number
 #'
-#' @return
-#' It returns a list that will include a cached data frame if exists
+#' @return It returns a list that will include a cached data frame if exists
 
 check_cached_company <- function(start_date, end_date, symbol) {
   dir_path <- system.file("company_symbols", package = "tasi")

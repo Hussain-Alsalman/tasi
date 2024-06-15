@@ -3,4 +3,6 @@
 ^data-raw$
 ^README\.Rmd$
 ^LICENSE\.md$
-
+^.github$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

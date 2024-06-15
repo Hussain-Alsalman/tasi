@@ -10,17 +10,17 @@ A data frame with 212 rows and 8 variables:
 \item{sectorName}{Sector name to which companies belog e.g.("Bank","Energy" ..etc)}
 \item{sectorRef}{Sector id to which companies belog e.g.("31", ..etc)}
 \item{companyRef}{Same as companySymbol aka:Ticker e.g.("8220","4002" ..etc)}
-\item{crynomName}{Company short name in English e.g aka:("SARCO","SAUDI ARAMCO" ..etc)}
+\item{acrynomName}{Company short name in English e.g aka:("SARCO","SAUDI ARAMCO" ..etc)}
 \item{companySymbol}{Company Symbol aka:Ticker e.g.("8220","4002" ..etc)}
 \item{companyUrl}{Company profile URL e.g.("/wps/portal/tadawul/markets/equities/indices/today/!ut/ ..")}
 \item{watchListId}{Watch list id. This is usually set to zeros unlist you have added stocks to watch on the website e.g.("0", "0", "0")}
 \item{watchlist}{This Flag for if the stock is in Watch list or not e.g.("FALSE", "FALSE")}
 \item{companyNameEN}{Full company name in English e.g.("Weqaya Takaful Insurance and Reinsurance Co.")}
-\item{companyNameAR}{Full company name in Arabic e.g.("شركة وقاية للتأمين وإعادة التأمين التكافلي")}
+\item{companyNameAR}{Full company name in Arabic}
 \item{companyName}{Company name in English e.g.("Weqaya Takaful Insurance and Reinsurance Co.")}
 \item{market_type}{Market type to differentiate it from Bond Market. Here, it is always "M" here}
 \item{tradingNameEn}{Short company name in English e.g.("Weqaya Takaful")}
-\item{tradingNameAr}{Short company name in Arabic e.g.("وقاية للتكافل")}
+\item{tradingNameAr}{Short company name in Arabic}
 \item{isin}{System code, usually not used}
 }
 }

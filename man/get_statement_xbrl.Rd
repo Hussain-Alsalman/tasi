@@ -11,7 +11,7 @@ get_statement_xbrl(company_symbol, period, statement_type = NULL)
 
 \item{period}{financial statement period which takes a form of (Qx or Annual)-Year. e.g "Q1-2021" or "Annual-2021"}
 
-\item{statement_type}{specific string that match XBRL specifications for financial statements. This can be obtained by \code{\link[tasi]{get_available_xbrl_statements()}}. Defaults to NULL.}
+\item{statement_type}{specific string that match XBRL specifications for financial statements. This can be obtained by \code{\link[tasi]{get_available_xbrl_statements}}. Defaults to NULL.}
 }
 \value{
 Data Frame of type tibble of specified XBRL Financial Statement
@@ -21,6 +21,6 @@ XBRL Financial Statement Extractor
 }
 \examples{
 company_symbol <- 1020
-period <- "Annual-2019"
+period <- "Annual-2023"
 get_statement_xbrl(company_symbol, period,"StatementOfOtherComprehensiveIncomeBeforeTax")
 }

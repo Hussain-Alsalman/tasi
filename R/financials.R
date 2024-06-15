@@ -94,7 +94,9 @@ get_cash_flow <- function(company_symbol, period_type = "q") {
 #'
 #' @return Data Frame that includes all links
 #' @import magrittr rvest
-
+#' @export
+#' @examples
+#' get_xbrl_table(2222)
 get_xbrl_table <- function(company_symbol) {
   xbrl_page  <- fin_parsURL(company_symbol, statement_type = "xbrl")
 
@@ -135,11 +137,13 @@ get_xbrl_table <- function(company_symbol) {
 
 #' Get available XBRL statements
 #'
-#' @param xbrl_statement xbrl_table produced by the \code{\link[tasi]{get_xbrl_table()}}
+#' @param xbrl_statement xbrl_table produced by the \code{\link[tasi]{get_xbrl_table}}
 #' @param period financial statement period which takes a form of (Qx or Annual)-Year. e.g "Q1-2021" or "Annual-2021"
 #'
 #' @return character vector of all available xbrl statements
 #' @export
+#' @examples
+#' get_available_xbrl_statements(get_xbrl_table(2222), "Annual-2023")
 
 get_available_xbrl_statements <- function(xbrl_statement, period) {
   index <- which(xbrl_statement$statement == period)
@@ -159,15 +163,15 @@ get_available_xbrl_statements <- function(xbrl_statement, period) {
 #'
 #' @param company_symbol Company Symbol number
 #' @param period financial statement period which takes a form of (Qx or Annual)-Year. e.g "Q1-2021" or "Annual-2021"
-#' @param statement_type specific string that match XBRL specifications for financial statements. This can be obtained by \code{\link[tasi]{get_available_xbrl_statements()}}. Defaults to NULL.
+#' @param statement_type specific string that match XBRL specifications for financial statements. This can be obtained by \code{\link[tasi]{get_available_xbrl_statements}}. Defaults to NULL.
 #'
 #' @return Data Frame of type tibble of specified XBRL Financial Statement
-#' @export
 #'
 #' @examples
 #' company_symbol <- 1020
-#' period <- "Annual-2019"
+#' period <- "Annual-2023"
 #' get_statement_xbrl(company_symbol, period,"StatementOfOtherComprehensiveIncomeBeforeTax")
+#' @export
 
 get_statement_xbrl <- function(company_symbol, period, statement_type = NULL) {
 

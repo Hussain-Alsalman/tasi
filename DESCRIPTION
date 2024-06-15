@@ -1,12 +1,12 @@
 Package: tasi
-Title: The Missing API for Saudi Stock Market 
-Version: 2.1.0.0000
+Title:  Application Programming Interface for Saudi Stock Market Data 
+Version: 0.1.1.0000
 Authors@R: 
     person(given = "Hussain",
            family = "Alsalman",
            role = c("aut", "cre"),
            email = "ArabianAnalyst@gmail.com")
-Description: This package to provide the missing API for Saudi Stock Market. It fetch historical equity prices and TASI (Tadawul All Share Index) as well as provides easy access to the released financial statements
+Description: A wrapper API to provide access to for Saudi stock market data. With this package you can obtain OHLCV historical market data for any enlisted company in the Saudi Stock Market.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -29,9 +29,9 @@ Imports:
     tidyr,
     httr, 
     progress,
-    assertthat
+    purrr
 Depends: 
-    R (>= 2.10)
+    R (>= 4.3.0)
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

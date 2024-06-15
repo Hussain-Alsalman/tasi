@@ -57,6 +57,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
 #' @param symbol_vector vector of company symbol numbers
 #' @param use_cache logical operator for using cached data
 #' @param tidy logical operator to return aggregated tibble
+#' @param auto_assign logical operator to specify if results should be assigned to the parent enviornment or returned
 #' @return returns a data frame of company historical stock performance
 #'
 #' @import tibble dplyr
