@@ -193,7 +193,7 @@ list_industries <- function() {
 #' @examples
 #' comp_info(2010)
 comp_info <- function(comp_symbol) {
-
+  stock_indices <- get("stock_indices")
   id <- as.character(comp_symbol)
   info <- as.list(
     stock_indices[which(stock_indices$companySymbol == id),]

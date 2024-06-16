@@ -9,6 +9,7 @@
 #'
 #' @return returns a data frame of company historical stock performance
 #' @import tibble dplyr
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -31,7 +32,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
         add_adj_price(symbol = company_symbol,start_date,end_date) %>%
         as_tibble(rownames = "Date") %>%
         add_column(.before = 1, symbol = rep(as.character(company_symbol), nrow(.))) %>%
-        mutate(Date = lubridate::as_date(Date))
+        mutate(Date = lubridate::as_date(.data$Date))
       return(return_df)
     }
     return(cache$df)
@@ -43,7 +44,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
         add_adj_price(symbol = company_symbol,start_date,end_date) %>%
         as_tibble(rownames = "Date") %>%
         add_column(.before = 1, symbol = rep(as.character(company_symbol), nrow(.))) %>%
-        mutate(Date = lubridate::as_date(Date))
+        mutate(Date = lubridate::as_date(.data$Date))
       return(return_df)
     }
     return(fullData)
@@ -61,6 +62,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
 #' @return returns a data frame of company historical stock performance
 #'
 #' @import tibble dplyr
+#' @importFrom rlang .data
 #' @export
 #
 #' @examples
@@ -80,7 +82,7 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
     tbl <- df %>%
       as_tibble(rownames = "Date") %>%
       add_column(.before = 1, symbol = rep(as.character(symbol), nrow(.))) %>%
-      mutate(Date = lubridate::as_date(Date))
+      mutate(Date = lubridate::as_date(.data$Date))
 
       aggregate_tbl <- aggregate_tbl %>%
         bind_rows(tbl)

@@ -1,18 +1,19 @@
 Package: tasi
 Title:  Application Programming Interface for Saudi Stock Market Data 
-Version: 0.1.1.0000
+Version: 0.1.0.0000
 Authors@R: 
     person(given = "Hussain",
            family = "Alsalman",
            role = c("aut", "cre"),
            email = "ArabianAnalyst@gmail.com")
-Description: A wrapper API to provide access to for Saudi stock market data. With this package you can obtain OHLCV historical market data for any enlisted company in the Saudi Stock Market.
+Description: A wrapper API to provide access to for Saudi stock market data. With this package you can obtain 'OHLCV' historical market data for any enlisted company in the Saudi Stock Market.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Imports: 
+Imports:
+    rlang,
     rjson,
     xts,
     dplyr,

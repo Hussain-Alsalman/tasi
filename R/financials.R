@@ -94,6 +94,7 @@ get_cash_flow <- function(company_symbol, period_type = "q") {
 #'
 #' @return Data Frame that includes all links
 #' @import magrittr rvest
+#' @importFrom rlang .data
 #' @export
 #' @examples
 #' get_xbrl_table(2222)
@@ -129,8 +130,8 @@ get_xbrl_table <- function(company_symbol) {
   colnames(table_links) <- header
 
   results <- table_links %>%
-    tidyr::pivot_longer(-period, names_to = "year", values_to = "link") %>%
-    dplyr::mutate(statement = paste0(period, "-", year))
+    tidyr::pivot_longer(-.data$period, names_to = "year", values_to = "link") %>%
+    dplyr::mutate(statement = paste0(.data$period, "-", .data$year))
 
   return(results)
 }
@@ -166,7 +167,7 @@ get_available_xbrl_statements <- function(xbrl_statement, period) {
 #' @param statement_type specific string that match XBRL specifications for financial statements. This can be obtained by \code{\link[tasi]{get_available_xbrl_statements}}. Defaults to NULL.
 #'
 #' @return Data Frame of type tibble of specified XBRL Financial Statement
-#'
+#' @importFrom utils menu
 #' @examples
 #' company_symbol <- 1020
 #' period <- "Annual-2023"
