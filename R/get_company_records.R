@@ -77,7 +77,7 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
   if (tidy) {
     aggregate_tbl <- NULL
     for (symbol in symbol_vector) {
-    df <- get_company_records(start_date, end_date, symbol, use_cache = TRUE)
+    df <- get_company_records(start_date, end_date, symbol, use_cache = use_cache)
     df <- add_adj_price(df, symbol = symbol, start_date, end_date)
     tbl <- df %>%
       as_tibble(rownames = "Date") %>%

@@ -138,7 +138,7 @@ add_adj_price <- function(x, symbol, start_date, end_date) {
   str_s <- date_elements(start_date)
   str_e <- date_elements(end_date)
 
-  start_date <- paste(str_s$D,"-",str_s$M,"-", str_s$Y, sep = "")
+  start_date <- paste(str_s$M, "/", str_s$D, "/", str_s$Y, sep = "")
   end_date <- paste(str_e$D,"-",str_e$M,"-", str_e$Y, sep = "")
   req <-  httr::POST(paste0(constants$dividends_base_url,constants$dividends_unique_key,constants$dividens), body = list(
    symbolorcompany = symbol,
