@@ -5,8 +5,8 @@ name: update-stock-list
 
 # This job scheduled to be run everyday on 3:00AM
 on:
-  schedule:
-    -  cron: '00 3 */1 * *'
+#  schedule:
+#    -  cron: '00 3 */1 * *'
   workflow_dispatch:
 
 jobs:
