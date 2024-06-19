@@ -17,7 +17,7 @@
 #' ## Not run:
 #' get_company_records("2020-01-01", "2020-12-31", 2222)
 #' ## End(Not run)
-get_company_records <- function(start_date, end_date, company_symbol, tidy = FALSE, use_cache = TRUE) {
+get_company_records <- function(start_date, end_date, company_symbol, tidy = FALSE, use_cache = FALSE) {
 
   #validate_input(start_date, end_date, company_symbol)
 
@@ -72,7 +72,7 @@ get_company_records <- function(start_date, end_date, company_symbol, tidy = FAL
 #' ## End(Not run)
 #'
 #'
-getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = TRUE, auto_assign = TRUE) {
+getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_cache = FALSE, auto_assign = TRUE) {
 
   if (tidy) {
     aggregate_tbl <- NULL
@@ -93,7 +93,7 @@ getSymbols <- function(start_date, end_date, symbol_vector, tidy = FALSE, use_ca
     df_xts <- xts::xts()
   }
   for (symbol in symbol_vector) {
-    df <- get_company_records(start_date, end_date, symbol, use_cache = TRUE)
+    df <- get_company_records(start_date, end_date, symbol, use_cache = use_cache)
     df <- add_adj_price(df, symbol = symbol, start_date, end_date)
     df_colnames <- colnames(df)
     new_colnames <- paste0("T", symbol, ".", df_colnames)

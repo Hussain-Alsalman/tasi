@@ -9,7 +9,7 @@ get_company_records(
   end_date,
   company_symbol,
   tidy = FALSE,
-  use_cache = TRUE
+  use_cache = FALSE
 )
 }
 \arguments{

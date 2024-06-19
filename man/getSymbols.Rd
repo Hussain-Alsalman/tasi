@@ -9,7 +9,7 @@ getSymbols(
   end_date,
   symbol_vector,
   tidy = FALSE,
-  use_cache = TRUE,
+  use_cache = FALSE,
   auto_assign = TRUE
 )
 }
