@@ -155,13 +155,18 @@ add_adj_price <- function(x, symbol, start_date, end_date) {
   df <- purrr::map(df$data, function(x) as.data.frame(t(unlist(x)))) |>
       purrr::list_rbind()
   if (!xts::is.xts(x)) x <- df_to_xts(x)
+  # some historical data does not have distribution date field
+  if (all(c("distributionDate", "announcedDate") %in% colnames(df))) {
 
-  if (length(inx_na <- which(is.na(df$distributionDate))) > 0 ) {
-    df$distributionDate[inx_na] <- df$announcedDate[inx_na]
-  }
-  divdns_xts <- xts::as.xts(as.numeric(df$amountValue), order.by = strptime(df$distributionDate, format = "%Y-%m-%d"))
-  if (length(divdns_xts) > 0) {
-    x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
+    if (length(inx_na <- which(is.na(df$distributionDate))) > 0 ) {
+      df$distributionDate[inx_na] <- df$announcedDate[inx_na]
+    }
+    divdns_xts <- xts::as.xts(as.numeric(df$amountValue), order.by = strptime(df$distributionDate, format = "%Y-%m-%d"))
+    if (length(divdns_xts) > 0) {
+      x$Adjusted <- quantmod::Cl(x) * TTR::adjRatios(close = quantmod::Cl(x),  dividends = divdns_xts)$Div
+    } else {
+      x$Adjusted <- x$Close
+    }
   } else {
     x$Adjusted <- x$Close
   }
