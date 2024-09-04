@@ -43,7 +43,8 @@ stock_indices <- df_supplement %>%
   left_join(stock_indices_partial, by = c("companySymbol" = "symbol")) %>%
   mutate(across(.cols = everything(), .fns = trimws)) %>%
   select(-colnames(.[5:42])) %>%
-  unique()
+  unique() %>%
+  filter(!is.na(isin))
 
 #write in the Stock market Data
 usethis::use_data(stock_indices, bonds_indices, overwrite = TRUE)
