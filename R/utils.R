@@ -19,7 +19,8 @@ validate_input <- function(start_date, end_date, company_symbol = NULL) {
     }
   }
   if (!is.null(company_symbol)) {
-    if (!assertthat::is.number(company_symbol) || !grepl(pattern = "[1-9][0-9]{3}", x = company_symbol)) {
+    if (assertthat::is.number(company_symbol) && grepl(pattern = "^[1-9][0-9]{3}$", x = company_symbol)) {
+    } else {
       stop("Company Symbol provided is incorrect. Company Symbols are usually 4 digit number with non-leading zero. for example 2222, 2010")
     }
   }

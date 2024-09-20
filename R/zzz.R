@@ -15,6 +15,11 @@ if (getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   inx <- gregexpr(pattern = '(?<=z1/).*(?=\\/dz)' , text = res$headers$`content-location`, perl = TRUE)
   .pkgenv[["constants"]][["dividends_unique_key"]] <- as.character(regmatches(res$headers$`content-location`, inx))
 
+  #Obtain URL unique segment for retrieving news_reports
+  res <- httr::GET("https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements/")
+  inx <- gregexpr(pattern = '(?<=z1/).*(?=\\/dz)' , text = res$headers$`content-location`, perl = TRUE)
+  .pkgenv[["constants"]][["announcements_unique_key"]] <- as.character(regmatches(res$headers$`content-location`, inx))
+
   #Obtain URL unique segment for retrieving financial statements
   base_url <- "https://www.saudiexchange.sa"
   res <- httr::GET(base_url) |>
@@ -28,4 +33,4 @@ if (getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 
   fin_uniq_key <- regmatches(link, gregexpr(pattern = '(?<=z1/).*(?=\\/\\?company)', text = link, perl = TRUE))
   .pkgenv[["constants"]][["fin_unique_key"]] <- fin_uniq_key
-}
+  }

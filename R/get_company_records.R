@@ -19,7 +19,7 @@
 #' ## End(Not run)
 get_company_records <- function(start_date, end_date, company_symbol, tidy = FALSE, use_cache = FALSE) {
 
-  #validate_input(start_date, end_date, company_symbol)
+  validate_input(start_date = start_date, end_date = end_date, company_symbol = company_symbol)
 
   if (use_cache) {
     cache <- check_cached_company(start_date = start_date, end_date = end_date,  symbol = company_symbol)
